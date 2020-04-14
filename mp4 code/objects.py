@@ -15,59 +15,95 @@ class PlayerCharacter:
         """
         Create a player character.
         """
+        self.x = x
+        self.y = y
+        self.display_char = display_char
+        self.health = health
+        self.boredom = boredom
+        self.num_tp = num_tp
+        
         # Initialize variables
         pass
 
-    def move(self, direction):
+    def move(self, event): 
         """
         Moves the player character.
         DOES NOT check if the move is valid.
 
         Args:
-            direction: one of "u"p, "d"own, "l"eft, or "r"ight, representing where the character moves
+            direction: one of "u"p, "d"own, "l"eft, or "r"ight, representing where the character moves 
         Raises:
             ValueError: if direction one of the characters as above
         """
         # Check if direction is valid
             # If it's not, return a value error
 
+        if event.type != KEYDOWN:
+            return
+        if event.key == pygame.K_UP:
+            self.model.change_vertical_position() #move up #still need to create these position functions.
+        if event.key == pyfame.K_DOWN:
+            self.model.change_vertical_position() #move down
+        if event.key == pygame.K_LEFT:
+            self.model.change_horizontal_position() #move left
+        if event.key == pygame.K_RIGHT:
+            self.model.change_horizontal_position() #move right
+            
         # Move character one square in direction indicated
 
         pass
 
-    def change_health(self,delta):
+    def change_health(self, delta = 20):
         """
-        Changes the character's health by delta.
-
-        Args:
-            delta: the amount health changes by
+        Changes the health of the character
+        
+        @delta      signed integer that changes the health
+        @max_health integer that represents the max health of character
+        
+        returns     True if the health change results in a value greater than zero False if the character is dead!
 
         Raises:
-            ValueError: if delta isn't an integer
+            ValueError: if delta isn't an integer #don't know how to raise errors
         """
+   
+        if self.health + delta <= 0:
+            return False
+        if self.health < = self.max_health and self.health > 0:
+            self.health = self.health - delta
+        return True
+     
         # Raise ValueError if delta isn't integer
-        # Change character's health by delta
         pass
 
-    def change_boredom(self,delta):
+    def change_boredom(self, delta = 5):
         """
-        Changes the character's boredom by delta.
-
-        Args:
-            delta: the amount boredom changes by
+        Changes the boredom of the character
+        
+        @delta    signed integer that changes the boredom
+        @max_boredom integer that represents the max boredom health of character
+        
+        returns   True if the boredom change results in a value less than max_boredom False if the character reaches max boredom and dies!
 
         Raises:
-            ValueError: if delta isn't an integer
+            ValueError: if delta isn't an integer         #don't know how to raise errors
         """
-        # Raise ValueError if delta isn't an integer
-        # Change character's boredom by delta
+        if self.boredom >= self.max_boredom:
+            return false
+        if self.boredom > 0 and self.boredom < self.max_boredom:
+            self.boredom += delta
+        return True
+    
+        # Raise ValueError if delta isn't integer
         pass
 
-    def get_toilet_paper(self):
+    def get_toilet_paper(self, num_tp):
         """
         Gets another roll of toilet paper.
         """
         # Increase character's toilet paper by one
+        
+         self.num_tp += 1
+         #you would only call this function if your hits a toilet paper. in which case, would it not be easier to just add 1 instead of having this whole function?  
         pass
 
 class Walls:
