@@ -1,15 +1,26 @@
 '''This should likely be renamed as something that is more descriptive, but this is my best guess
 for a name based on mp4'''
+from objects import *
+import random
+import pygame
+import datetime
+
+k_default_move_value = 1
+k_intial_jump_velocity = .5
+k_gravity = -9.8
 
 class Model:
     """
     Updates the game based on Controller input.
     """
-    def __init__(self):
+    def __init__(self, num_tp = 5, num_sick_people = 3, num_masks = 4, num_eggs = 4):
         '''
         platform_list: list of each platform object to be used for finding where they are
         platform_locations: dictionary of each platforms corners format {'left_bound', 'right_bound', 'top_bound', 'bottom_bound'}
         object_list: list of each object object to be used for finding where they are
+        available_objects: objects that aren't currently on screen, and could be on screen
+        unavailable_objects: the opposite of available_objects, all objects are in one or the other of
+        these lists.
         object_locations: dictionary of each object corners format {'left_bound', 'right_bound', 'top_bound', 'bottom_bound'}
             - should probably figure out if characters are also going to have the same properties as objects or
               if they are going to move around and stuff like that.
@@ -17,8 +28,21 @@ class Model:
         self.platform_list = []
         self.platform_locations = []
         self.object_list = []
+        self.available_objects = []
+        self.unavailable_objects = []
         self.object_locations = []
+        self.player_character = PlayerCharacter()
 
+        for tp in range(num_tp):
+            self.object_list.append(Object(self.player_character.get_toilet_paper, 1, 'tp'))
+        for sick_people in range(num_sick_people):
+            self.object_list.append(Object(self.player_character.change_health, 15, 'sick person'))
+        for mask in range(num_masks):
+            self.object_list.append(Object(self.player_character.change_health, 5, 'mask'))
+        for egg in range(num_eggs):
+            self.object_list.append(Object(self.player_character.change_zest, 5, 'egg'))
+
+        self.available_objects = self.object_list.copy()
 
     def run(self):
         """
@@ -26,13 +50,37 @@ class Model:
         game state.
         Handles collisions between the player and objects.
         """
-        #While the health value is > 0 and the boredom value is < 100, get input from
-        #controller, eventually will check if moves are valid based on if the player
-        #is contacting any walls.
+        #make sure we aren't dead first
+        if player_character.health > 0 and player_character.zest > 0:
+            #EVERYTHING DEALING WITH OBJECTS:
+            #choose to add an object to screen
+            if random.randint(0,10) == 0:
+                #potentially need to add thing to show the object
+                object_to_move = available_objects[random.randint(0,len(available_objects))]
+                available_objects.remove(object_to_move)
+                unavailable_objects.append(object_to_move)
+            #move each object that is on screen
+            for object in unavailable_objects:
+                object.x -= k_default_move_value
+                #if the object has reached the edge of the screen, remove it
+                if object.x <=-3: #CHANGE NUMBER LATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    #potentially need to add a thing to hide the object
+                    unavailable_objects.remove(object)
+                    available_objects.append(object)
+                    object.x = 270 #CHANGE THIS NUMBER TO THE EDGE OF THE SCREEN
+                    object.y = 320 #ALSO CHANGE THIS
+            #EVERTHING DEALING WITH THE PLAYER
 
-        #Update player health, boredom, and toilet paper values if contacting any
-        #objects or other characters.
-        pass
+            if event.key == pygame.K_LEFT:
+                self.player_character.x -= k_default_move_value
+            if event.key == pygame.K_RIGHT:
+                self.player_character.x += k_default_move_value
+            if event.key == pygame.K_UP:
+                self.player_character.jumping = True
+                self.player_character.jump_start_time = datetime.time.seconds
+            if self.player_character.jumping:
+                delta_t = datetime.time.seconds - self.player_character.jump_start_time
+                y = (k_intial_jump_velocity*delta_t) + (.5*k_gravity*(delta_t**2))
 
 
     def update_locations(self):
@@ -50,8 +98,8 @@ class Model:
         for platform in self.platform_list:
             self.platform_locations.append(platform.location)
         self.object_locations = []
-        for object in self.platform_list:
-            self.platform_locations.append(object.location)
+        for object in self.object_list:
+            self.object_locations.append(object.location)
         pass
 
 
@@ -88,3 +136,6 @@ class Model:
                 elif current_location['bottom_bound'] + delta in range(platform['top_bound'],platform['bottom_bound']):
                     directions['down'] = False
         return directions
+
+if __name__ == '__main__':
+    model = Model()

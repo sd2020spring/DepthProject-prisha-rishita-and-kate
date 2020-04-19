@@ -194,7 +194,7 @@ class Ship(space_object):
         """
         Changes the amount of ammo in the spaceship
         can be used for adjusting ammo after firing and reloading
-        @change     signed integer that changes amount of ammo that the ship has without going below zero 
+        @change     signed integer that changes amount of ammo that the ship has without going below zero
         returns     true if the operation completes succesfully, False if out of ammo"""
 
         if self.ammo + change < 0:
@@ -220,7 +220,7 @@ class Ship(space_object):
         """
         Override the main update func to reload ammo and health
         @looprate   makes sure that rates (velocities are adjusted to the right speed per second"""
-        
+
         super().update()
         self.change_ammo(self.rel_rate / loop_rate)
         self.change_health(self.health_rate / loop_rate)
@@ -235,13 +235,13 @@ class GameModel:
         @size               size of the screen
         @start_asteroids    indicates how many asteroids should start on the screen"""
 
-        self.asteroids = []         # Asteroids list 
+        self.asteroids = []         # Asteroids list
         self.add_asteroids(start_asteroids)
         self.bullets = []           # Bullet List
         self.ship = Ship(20, 20, 0, 0, 0, 1, 0.04, 5, 0, 0, 10, 1.5, 3)
-        self.lives = 3              # Number of lives 
+        self.lives = 3              # Number of lives
         self.score = 0              # Player's score
-        self.width = size[0]        # Window width 
+        self.width = size[0]        # Window width
         self.height = size[1]       # Window Height
         self.asteroid_rate = 3      # Asteroids spawned per second
         self.loop_rate = 100        # Number of loops per second (this may be able to be calculated)
@@ -432,4 +432,3 @@ if __name__ == '__main__':
         time.sleep(.001)  # this paces our program a bit
 
     pygame.quit()  # we get here only if the QUIT event breaks the while loop above
- 

@@ -7,51 +7,22 @@ class PlayerCharacter:
         y: the y-location of the character
         display_char: the character to display for this character
         health: how much health the character has left (out of 100)
-        boredom: how bored your character is (max 100)
+        zest: how bored your character is (max 100)
         num_tp: number of toilet paper rolls your character has
 
     """
-    def __init__(self, x=0, y=0, display_char='@', health=100, boredom=0, num_tp=0):
+    def __init__(self, x=0, y=0, health=100, zest=0, num_tp=0):
         """
         Create a player character.
         """
         self.x = x
         self.y = y
-        self.display_char = display_char
         self.health = health
-        self.boredom = boredom
+        self.zest = zest
         self.num_tp = num_tp
-
-        # Initialize variables
-        pass
-
-    def move(self, event):
-        """
-        Moves the player character.
-        DOES NOT check if the move is valid.
-
-        Args:
-            direction: one of "u"p, "d"own, "l"eft, or "r"ight, representing where the character moves
-        Raises:
-            ValueError: if direction one of the characters as above
-        """
-        # Check if direction is valid
-            # If it's not, return a value error
-
-        if event.type != KEYDOWN:
-            return
-        if event.key == pygame.K_UP:
-            self.model.change_vertical_position() #move up #still need to create these position functions.
-        if event.key == pyfame.K_DOWN:
-            self.model.change_vertical_position() #move down
-        if event.key == pygame.K_LEFT:
-            self.model.change_horizontal_position() #move left
-        if event.key == pygame.K_RIGHT:
-            self.model.change_horizontal_position() #move right
-
-        # Move character one square in direction indicated
-
-        pass
+        self.jumping = False
+        self.jump_start_time = 0
+        
 
     def change_health(self, delta = 20):
         """
@@ -75,22 +46,22 @@ class PlayerCharacter:
         # Raise ValueError if delta isn't integer
         pass
 
-    def change_boredom(self, delta = 5):
+    def change_zest(self, delta = 5):
         """
-        Changes the boredom of the character
+        Changes the zest of the character
 
-        @delta    signed integer that changes the boredom
-        @max_boredom integer that represents the max boredom health of character
+        @delta    signed integer that changes the zest
+        @max_zest integer that represents the max zest health of character
 
-        returns   True if the boredom change results in a value less than max_boredom False if the character reaches max boredom and dies!
+        returns   True if the zest change results in a value less than max_zest False if the character reaches max zest and dies!
 
         Raises:
             ValueError: if delta isn't an integer         #don't know how to raise errors
         """
-        if self.boredom >= self.max_boredom:
+        if self.zest >= self.max_zest:
             return false
-        if self.boredom > 0 and self.boredom < self.max_boredom:
-            self.boredom += delta
+        if self.zest > 0 and self.zest < self.max_zest:
+            self.zest += delta
         return True
 
         # Raise ValueError if delta isn't integer
@@ -133,22 +104,33 @@ class Object:
     Attributes:
         delta_function: the function to call when a collision occurs, ex. player.get_toilet_paper,
         delta_value: the amount that the delta_function will change a value by
-        display_char: the character to display for the object
+        type: a string describing what object it is
         x: the x-location of the object
         y: the y-location of the object
 
     Examples of different objects:
         toilet paper: increases toilet paper by 1
         masks: increase health by 5
-        activities: decrease boredom by 5
+        activities: decrease zest by 5
         ventilator: increases health by 100
     """
-    def __init__(self, delta_function, delta_value, display_char = 'tp', x=0, y=0):
+    def __init__(self, delta_function, delta_value, type, x=320, y=270):
         """
         Create an object.
         """
         # Initialize variables
-        pass
+        self.delta_function = delta_function
+        self.delta_value = delta_value
+        self.type = type
+        self.x = x
+        self.y = y
+
+    def __str__(self):
+        """
+        prints the object type
+        """
+        print(str(self.type))
+
 
     def contact_player(self):
         """
