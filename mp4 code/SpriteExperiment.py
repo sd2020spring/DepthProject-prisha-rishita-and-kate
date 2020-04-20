@@ -52,8 +52,72 @@ class Player(pygame.sprite.Sprite): #sprite for player
         self.rect.x += 5
         if self.rect.left > WIDTH_GW:
             self.rect.right = 0
+	
+class TP(pygame.sprite.Sprite): #sprite for toilet paper
+    def __init__(self):
+      pygame.sprite.Sprite.__init__(self)
+      self.image = tp_img
+	    self.image.set_colorkey(BLACK)
+      self.rect = self.image.get_rect()
+      self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
 
+class SickPerson(pygame.sprite.Sprite): #sprite for sick person
+    def __init__(self):
+      pygame.sprite.Sprite.__init__(self)
+      self.image = sick_img
+	    self.image.set_colorkey(BLACK)
+      self.rect = self.image.get_rect()
+      self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
 
+class Ventilator(pygame.sprite.Sprite): #sprite for ventilator
+    def __init__(self):
+      pygame.sprite.Sprite.__init__(self)
+      self.image = ventilator_img
+	    self.image.set_colorkey(BLACK)
+      self.rect = self.image.get_rect()
+      self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+
+class Mask(pygame.sprite.Sprite): #sprite for mask
+    def __init__(self):
+      pygame.sprite.Sprite.__init__(self)
+      self.image = mask_img
+	    self.image.set_colorkey(BLACK)
+      self.rect = self.image.get_rect()
+      self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+	
+class Guitar(pygame.sprite.Sprite): #sprite for guitar
+    def __init__(self):
+      pygame.sprite.Sprite.__init__(self)
+      self.image = guitar_img
+	    self.image.set_colorkey(BLACK)
+      self.rect = self.image.get_rect()
+      self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+	
+class PaintBrush(pygame.sprite.Sprite): #sprite for paint brush
+    def __init__(self):
+      pygame.sprite.Sprite.__init__(self)
+      self.image = paint_img
+	    self.image.set_colorkey(BLACK)
+      self.rect = self.image.get_rect()
+      self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+	
+class Egg(pygame.sprite.Sprite): #sprite for egg
+    def __init__(self):
+      pygame.sprite.Sprite.__init__(self)
+      self.image = egg_img
+	    self.image.set_colorkey(BLACK)
+      self.rect = self.image.get_rect()
+      self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+	
+class SocialMedia(pygame.sprite.Sprite): #sprite for social media
+    def __init__(self):
+      pygame.sprite.Sprite.__init__(self)
+      self.image = social_img
+	    self.image.set_colorkey(BLACK)
+      self.rect = self.image.get_rect()
+      self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+
+	
 #add sprite for toilet paper, sick person, ventilator, mask, guitar, paint brushes, eggs, and social media
 #all of these except sick person should be randomly placed but not on each other- should be randomly placed
 #sick person should move front and back on screen
@@ -66,7 +130,3 @@ class Player(pygame.sprite.Sprite): #sprite for player
 	#if collides with ventilator - health increase x2
 	
 	#if collides with guitar, paint brushes, eggs, or social media - entertainment increase
-	
-	
-
-    
