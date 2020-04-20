@@ -48,26 +48,46 @@ while running:
     
     
 class Player(pygame.sprite.Sprite): #sprite for player
-    def __init__(self):
-      pygame.sprite.Sprite.__init__(self)
-      self.image = player_img
-	    self.image.set_colorkey(BLACK)
-      self.rect = self.image.get_rect()
-      self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2)
- 
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = player_img
+		self.image.set_colorkey(BLACK)
+		self.rect = self.image.get_rect()
+		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2)
+		self.speedx = 0
+		#self.speedy = 0
+		
+	def update(self, event):
+        """
+        Moves the player character.
+        DOES NOT check if the move is valid.
+        Args:
+            direction: one of "u"p, "d"own, "l"eft, or "r"ight, representing where the character moves
+        Raises:
+            ValueError: if direction one of the characters as above
+        """
+        # Check if direction is valid
+            # If it's not, return a value error
 
-    def update(self):
-        self.rect.x += 5
-        if self.rect.left > WIDTH_GW:
-            self.rect.right = 0
+		if event.type != KEYDOWN:
+		    return
+		if event.key == pygame.K_LEFT:#move left
+		    player.speedx = -5
+		if event.key == pygame.K_RIGHT: #move right
+		    player.speedx = 5
+		#if event.key == pygame.K_UP:
+		    #player.speedy = 5 #move up 
+		#if event.key == pyfame.K_DOWN:
+		    #player.speedy = -5 #move down
+
 	
 class TP(pygame.sprite.Sprite): #sprite for toilet paper
-    def __init__(self):
-      pygame.sprite.Sprite.__init__(self)
-      self.image = tp_img
-	    self.image.set_colorkey(BLACK)
-      self.rect = self.image.get_rect()
-      self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+      		self.image = tp_img
+	    	self.image.set_colorkey(BLACK)
+    		self.rect = self.image.get_rect()
+      		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
 
 class SickPerson(pygame.sprite.Sprite): #sprite for sick person
     def __init__(self):
