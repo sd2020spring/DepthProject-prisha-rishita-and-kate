@@ -176,3 +176,4 @@ class SocialMedia(pygame.sprite.Sprite): #sprite for social media
 	#if collides with ventilator - health increase x2
 	
 	#if collides with guitar, paint brushes, eggs, or social media - entertainment increase
+#talked with NINJA, in update function, you can randomly choose a sprite and add it to a list and those in the list will appear on screen
