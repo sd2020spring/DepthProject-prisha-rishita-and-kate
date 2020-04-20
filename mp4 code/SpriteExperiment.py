@@ -1,6 +1,6 @@
-https://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
-https://kidscancode.org/blog/2016/08/pygame_1-2_working-with-sprites/
-https://kidscancode.org/blog/2016/08/pygame_1-3_more-about-sprites/
+#https://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
+#https://kidscancode.org/blog/2016/08/pygame_1-2_working-with-sprites/
+#https://kidscancode.org/blog/2016/08/pygame_1-3_more-about-sprites/
 
 import pygame
 import random
@@ -39,7 +39,7 @@ while running:
     pygame.display.flip()
     
     
-class Player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite): #sprite for player
     def __init__(self):
       pygame.sprite.Sprite.__init__(self)
       self.image = player_img
@@ -52,6 +52,21 @@ class Player(pygame.sprite.Sprite):
         self.rect.x += 5
         if self.rect.left > WIDTH_GW:
             self.rect.right = 0
-     
-    
+
+
+#add sprite for toilet paper, sick person, ventilator, mask, guitar, paint brushes, eggs, and social media
+#all of these except sick person should be randomly placed but not on each other- should be randomly placed
+#sick person should move front and back on screen
+#player should move based on keyboard movements
+#check for collision between player and others
+	#if collides with toilet paper - points increase
+	
+	#if collides with sick person - health decrease
+	#if collides with mask - health increase
+	#if collides with ventilator - health increase x2
+	
+	#if collides with guitar, paint brushes, eggs, or social media - entertainment increase
+	
+	
+
     
