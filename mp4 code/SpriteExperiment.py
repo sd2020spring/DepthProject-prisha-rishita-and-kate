@@ -24,28 +24,16 @@ paint = pygame.image.load(os.path.join(img_folder, 'paint.png')).convert()
 egg = pygame.image.load(os.path.join(img_folder, 'egg.png')).convert()
 social = pygame.image.load(os.path.join(img_folder, 'social.png')).convert()
 
+#list of images of objects which decrease boredom
+dec_bore_objs = [guitar, paint, egg, social]
+
 # initialize pygame and create window
 pygame.init()
 game_screen = pygame.display.set_mode((WIDTH_GW, HEIGHT_GW))
 pygame.display.set_caption("COVID-19 Game")
 clock = pygame.time.Clock()
+all_sprites = pygame.sprite.Group()
 
-# Game Loop
-running = True
-while running:
-    # Process input (events)
-    
-    # Update
-    
-    # keep loop running at the right speed
-    clock.tick(FPS)
-    
-    # Draw / render
-    screen.fill(BLACK)
-    
-    # *after* drawing everything, flip the display
-    pygame.display.flip()
-    
     
 class Player(pygame.sprite.Sprite): #sprite for player
 	def __init__(self):
@@ -91,7 +79,7 @@ class TP(pygame.sprite.Sprite): #sprite for toilet paper
         	self.rect.y = random.randrange(0, 50) #TP will stay near ground since we are working on non platformer version
         	self.speedx = random.randrange(-5, 5) #TP will move around screen 
 		
-	def update(self):
+	def update(self): #if this is randomly selected for all objects, we can prob form this func outside and call in each class
         	self.rect.x += self.speedx #speed in x direction gets randomized
         	if self.rect.top > HEIGHT_GW:
 		    self.rect.x = random.randrange(WIDTH_GW - self.rect.width)
@@ -130,44 +118,69 @@ class Mask(pygame.sprite.Sprite): #sprite for mask
 	    	self.image.set_colorkey(BLACK)
       		self.rect = self.image.get_rect()
       		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
-	
-class Guitar(pygame.sprite.Sprite): #sprite for guitar
-    	def __init__(self):
-      		pygame.sprite.Sprite.__init__(self)
-      		self.image = guitar_img
-	        self.image.set_colorkey(BLACK)
-      		self.rect = self.image.get_rect()
-      		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
-	
-class PaintBrush(pygame.sprite.Sprite): #sprite for paint brush
-	def __init__(self):
-      		pygame.sprite.Sprite.__init__(self)
-      		self.image = paint_img
-		self.image.set_colorkey(BLACK)
-      		self.rect = self.image.get_rect()
-     		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
-	
-class Egg(pygame.sprite.Sprite): #sprite for egg
-    	def __init__(self):
-		pygame.sprite.Sprite.__init__(self)
-	      	self.image = egg_img
-		self.image.set_colorkey(BLACK)
-	     	self.rect = self.image.get_rect()
-	      	self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
-	
-class SocialMedia(pygame.sprite.Sprite): #sprite for social media
-    	def __init__(self):
-		pygame.sprite.Sprite.__init__(self)
-      		self.image = social_img
-	   	self.image.set_colorkey(BLACK)
-     		self.rect = self.image.get_rect()
-      		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
 
+class DecreaseBoredom(pygame.sprite.Sprite) #common sprite for all objects which decrease boredom
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = random.choice(dec_bore_objs) #pick randomly from a list of images of objects
+		self.image.set_colorkey(BLACK)
+		self.rect = self.image.get_rect()
+		self.rect.center = #randomly place object on screen
+		
 	
-#add sprite for toilet paper, sick person, ventilator, mask, guitar, paint brushes, eggs, and social media
-#all of these except player should be randomly placed but not on each other- should be randomly placed
+# class Guitar(pygame.sprite.Sprite): #sprite for guitar
+#     	def __init__(self):
+#       		pygame.sprite.Sprite.__init__(self)
+#       		self.image = guitar_img
+# 	        self.image.set_colorkey(BLACK)
+#       		self.rect = self.image.get_rect()
+#       		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+	
+# class PaintBrush(pygame.sprite.Sprite): #sprite for paint brush
+# 	def __init__(self):
+#       		pygame.sprite.Sprite.__init__(self)
+#       		self.image = paint_img
+# 		self.image.set_colorkey(BLACK)
+#       		self.rect = self.image.get_rect()
+#      		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+	
+# class Egg(pygame.sprite.Sprite): #sprite for egg
+#     	def __init__(self):
+# 		pygame.sprite.Sprite.__init__(self)
+# 	      	self.image = egg_img
+# 		self.image.set_colorkey(BLACK)
+# 	     	self.rect = self.image.get_rect()
+# 	      	self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+	
+# class SocialMedia(pygame.sprite.Sprite): #sprite for social media
+#     	def __init__(self):
+# 		pygame.sprite.Sprite.__init__(self)
+#       		self.image = social_img
+# 	   	self.image.set_colorkey(BLACK)
+#      		self.rect = self.image.get_rect()
+#       		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+
+# Game Loop
+running = True
+while running:
+    # Process input (events)
+    
+    # Update
+   # Update
+    all_sprites.update() #group of all sprites are updated
+    
+    # keep loop running at the right speed
+    clock.tick(FPS)
+    
+    # Draw / render
+    screen.fill(BLACK)
+    all_sprites.draw(screen) #all updated sprites drawn
+    
+    # after drawing everything, flip the display to make it visible to viewer
+    pygame.display.flip()
+	
+
 # objects should move front and back on screen?
-#player should move based on keyboard movements
 #check for collision between player and others
 	#if collides with toilet paper - points increase
 	
@@ -176,7 +189,4 @@ class SocialMedia(pygame.sprite.Sprite): #sprite for social media
 	#if collides with ventilator - health increase x2
 	
 	#if collides with guitar, paint brushes, eggs, or social media - entertainment increase
-#talked with NINJA, in update function, you can randomly choose a sprite and add it to a list and those in the list will appear on screen
-
-#Questions for Steve: How do I use sprite grouping? Is it even worth it for our game purposes? (Guitar, paint brushes, eggs, and social media all 
-	#do the same things, just their visual is different. What is the best and most efficient manner of going about this?
+    
