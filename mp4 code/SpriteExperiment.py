@@ -1,6 +1,7 @@
 #https://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
 #https://kidscancode.org/blog/2016/08/pygame_1-2_working-with-sprites/
 #https://kidscancode.org/blog/2016/08/pygame_1-3_more-about-sprites/
+#isinstance(sprite, BaseItem) Steve mentioned that this could be useful...
 
 import pygame
 import random
