@@ -177,3 +177,6 @@ class SocialMedia(pygame.sprite.Sprite): #sprite for social media
 	
 	#if collides with guitar, paint brushes, eggs, or social media - entertainment increase
 #talked with NINJA, in update function, you can randomly choose a sprite and add it to a list and those in the list will appear on screen
+
+#Questions for Steve: How do I use sprite grouping? Is it even worth it for our game purposes? (Guitar, paint brushes, eggs, and social media all 
+	#do the same things, just their visual is different. What is the best and most efficient manner of going about this?
