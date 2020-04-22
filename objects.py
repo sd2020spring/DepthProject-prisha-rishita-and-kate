@@ -1,4 +1,8 @@
-class PlayerCharacter:
+"""Creates the player character class and objects class"""
+from model import *
+import pygame
+
+class PlayerCharacter(pygame.sprite.Sprite):
     """
     The player character of a top-down turn-based game.
 
@@ -11,7 +15,7 @@ class PlayerCharacter:
         num_tp: number of toilet paper rolls your character has
 
     """
-    def __init__(self, x=0, y=0, health=100, zest=0, num_tp=0):
+    def __init__(self, image, x=0, y=0, health=100, zest=0, num_tp=0):
         """
         Create a player character.
         """
@@ -22,7 +26,13 @@ class PlayerCharacter:
         self.num_tp = num_tp
         self.jumping = False
         self.jump_start_time = 0
-        
+        pygame.sprite.Sprite.__init__(self)
+        self.image = image
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2)
+
+
 
     def change_health(self, delta = 20):
         """
@@ -77,26 +87,6 @@ class PlayerCharacter:
          #you would only call this function if your hits a toilet paper. in which case, would it not be easier to just add 1 instead of having this whole function?
         pass
 
-class Walls:
-    """
-    Defines the location of a specific wall and how to display it
-
-    Attributes:
-        horizontal: boolean value representing if the wall is horizontal or vertical
-        x_start: the starting x coordinate for the wall
-        y_start: the starting y coordinate for the wall
-        delta: the change in the horizontal or vertical direction
-    """
-    def __init__(self, horizontal = True, x_start = 0, y_start = 0, delta = 0):
-        """
-        Creates a horizontal or vertical wall
-
-        Raises:
-            ValueError if x_start, y_start, or delta are not integers
-        """
-        #Initialize variables
-        pass
-
 class Object:
     """
     The different objects that interact with the player.
@@ -104,7 +94,7 @@ class Object:
     Attributes:
         delta_function: the function to call when a collision occurs, ex. player.get_toilet_paper,
         delta_value: the amount that the delta_function will change a value by
-        type: a string describing what object it is
+        image: the image that shows up when you display the object
         x: the x-location of the object
         y: the y-location of the object
 
@@ -114,7 +104,7 @@ class Object:
         activities: decrease zest by 5
         ventilator: increases health by 100
     """
-    def __init__(self, delta_function, delta_value, type, x=320, y=270):
+    def __init__(self, delta_function, delta_value, image, x=320, y=270):
         """
         Create an object.
         """
@@ -124,12 +114,10 @@ class Object:
         self.type = type
         self.x = x
         self.y = y
-
-    def __str__(self):
-        """
-        prints the object type
-        """
-        print(str(self.type))
+        pygame.sprite.Sprite.__init__(self)
+        self.image = image
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
 
 
     def contact_player(self):

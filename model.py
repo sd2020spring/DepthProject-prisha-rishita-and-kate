@@ -1,13 +1,22 @@
-'''This should likely be renamed as something that is more descriptive, but this is my best guess
-for a name based on mp4'''
+'''Model Class that runs the game, and code that creates an instance of the model'''
+#https://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
+#https://kidscancode.org/blog/2016/08/pygame_1-2_working-with-sprites/
+#https://kidscancode.org/blog/2016/08/pygame_1-3_more-about-sprites/
+#isinstance(sprite, BaseItem) Steve mentioned that this could be useful...
 from objects import *
 import random
 import pygame
 import datetime
+import os
 
+#constant values
 k_default_move_value = 1
 k_intial_jump_velocity = .5
 k_gravity = -9.8
+WIDTH_GW = 360  # width of our game window
+HEIGHT_GW = 480 # height of our game window
+FPS = 30 # frames per second
+BLACK = (0,0,0)
 
 class Model:
     """
@@ -25,24 +34,46 @@ class Model:
             - should probably figure out if characters are also going to have the same properties as objects or
               if they are going to move around and stuff like that.
         '''
+
+        # initialize pygame and create window
+        pygame.init()
+        game_screen = pygame.display.set_mode((WIDTH_GW, HEIGHT_GW))
+        pygame.display.set_caption("COVID-19 Game")
+        clock = pygame.time.Clock()
+        all_sprites = pygame.sprite.Group()
+
+        # set up asset folders
+        game_folder = os.path.dirname(__file__)
+        img_folder = os.path.join(game_folder, 'img')
+        player_img = pygame.image.load(os.path.join(img_folder, 'human.jpg')).convert()
+        tp_img = pygame.image.load(os.path.join(img_folder, 'tp.jpg')).convert()
+        sick_img = pygame.image.load(os.path.join(img_folder, 'sick.png')).convert()
+        egg_img = pygame.image.load(os.path.join(img_folder, 'egg.png')).convert()
+        mask_img = pygame.image.load(os.path.join(img_folder, 'mask.jpg')).convert()
+        '''guitar = pygame.image.load(os.path.join(img_folder, 'guitar.png')).convert()
+        paint = pygame.image.load(os.path.join(img_folder, 'paint.png')).convert()
+        social = pygame.image.load(os.path.join(img_folder, 'social.png')).convert()
+        ventilator_img = pygame.image.load(os.path.join(img_folder, 'ventilator.png')).convert()'''
+
         self.platform_list = []
         self.platform_locations = []
         self.object_list = []
         self.available_objects = []
         self.unavailable_objects = []
         self.object_locations = []
-        self.player_character = PlayerCharacter()
+        self.player_character = PlayerCharacter(player_img)
 
         for tp in range(num_tp):
-            self.object_list.append(Object(self.player_character.get_toilet_paper, 1, 'tp'))
+            self.object_list.append(Object(self.player_character.get_toilet_paper, 1, tp_img))
         for sick_people in range(num_sick_people):
-            self.object_list.append(Object(self.player_character.change_health, 15, 'sick person'))
+            self.object_list.append(Object(self.player_character.change_health, 15, sick_img))
         for mask in range(num_masks):
-            self.object_list.append(Object(self.player_character.change_health, 5, 'mask'))
+            self.object_list.append(Object(self.player_character.change_health, 5, mask_img))
         for egg in range(num_eggs):
-            self.object_list.append(Object(self.player_character.change_zest, 5, 'egg'))
+            self.object_list.append(Object(self.player_character.change_zest, 5, egg_img))
 
         self.available_objects = self.object_list.copy()
+
 
     def run(self):
         """
@@ -67,10 +98,10 @@ class Model:
                     #potentially need to add a thing to hide the object
                     unavailable_objects.remove(object)
                     available_objects.append(object)
-                    object.x = 270 #CHANGE THIS NUMBER TO THE EDGE OF THE SCREEN
-                    object.y = 320 #ALSO CHANGE THIS
-            #EVERTHING DEALING WITH THE PLAYER
+                    object.x = WIDTH_GW/2
+                    object.y = HEIGHT_GW - 20
 
+            #EVERTHING DEALING WITH THE PLAYER
             if event.key == pygame.K_LEFT:
                 self.player_character.x -= k_default_move_value
             if event.key == pygame.K_RIGHT:
@@ -82,60 +113,6 @@ class Model:
                 delta_t = datetime.time.seconds - self.player_character.jump_start_time
                 y = (k_intial_jump_velocity*delta_t) + (.5*k_gravity*(delta_t**2))
 
-
-    def update_locations(self):
-        '''
-        Go through each platform and object and update its location.
-        This should at some point check to see if the object is still on the screen
-        and remove any objects from the list that are no longer on the screen. maybe?
-            - platform.location is likely a placeholder name and probably will be changed once
-              the platform class is made.
-            - location should be a dictionary of the bounds
-
-        Returns: None
-        '''
-        self.platform_locations = []
-        for platform in self.platform_list:
-            self.platform_locations.append(platform.location)
-        self.object_locations = []
-        for object in self.object_list:
-            self.object_locations.append(object.location)
-        pass
-
-
-    def motions_possible(self, character_object, delta):
-        '''
-        Takes a character object, and evaluates in which directions motion is motions_possible
-        based on platform locations.
-        Delta: how far to check in each direction if the character can move.
-
-        Returns: a dictionary containing each direction and a boolean value of if it can move
-        there or not
-            -this could also check if a character is going to run into the player character in the
-             case of sick people too, need to consider more
-            -i also included up as a direction of motion, not sure if this is needed or not?
-            -character object location should be in the same format with the corners
-            - also it feels like there has to be a better way of checking if they are intersecting but idk what
-            - this is also assuming that the top left corner is 0,0
-        '''
-        current_location = character_object.location
-        directions = {'left':True, 'right':True, 'up':True, 'down':True}
-        for platform in self.platform_locations:
-            #check if it can move left/right
-            if (current_location['top_bound'] in range(platform['top_bound'],platform['bottom_bound']) or
-                        current_location['bottom_bound'] in range(platform['top_bound'],platform['bottom_bound'])):
-                if current_location['left_bound'] - delta in range(platform['left_bound'],platform['right_bound']):
-                    directions['left'] = False
-                elif current_location['right_bound'] + delta in range(platform['left_bound'],platform['right_bound']):
-                    directions['right'] = False
-            #check if it can move up/down
-            if (current_location['left_bound'] in range(platform['left_bound'],platform['right_bound']) or
-                        current_location['right_bound'] in range(platform['left_bound'],platform['right_bound'])):
-                if current_location['top_bound'] - delta in range(platform['top_bound'],platform['bottom_bound']):
-                    directions['up'] = False
-                elif current_location['bottom_bound'] + delta in range(platform['top_bound'],platform['bottom_bound']):
-                    directions['down'] = False
-        return directions
 
 if __name__ == '__main__':
     model = Model()
