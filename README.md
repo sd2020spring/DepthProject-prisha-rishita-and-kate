@@ -6,11 +6,8 @@ When the game starts, the player starts off with 100% health & 100% "zest for li
 
 Getting Started
 Open a terminal and run “sudo apt-get install python-pygame” to install pygame.
-Import pygame
-Import random
-Import date
-Import time
-Import os
+
+Import pygame, random, date, time, and os.
 
 Usage - this will be updated at the end.
  
