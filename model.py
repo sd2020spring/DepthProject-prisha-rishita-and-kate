@@ -37,10 +37,12 @@ class Model:
 
         # initialize pygame and create window
         pygame.init()
-        game_screen = pygame.display.set_mode((WIDTH_GW, HEIGHT_GW))
+        self.game_screen = pygame.display.set_mode((WIDTH_GW, HEIGHT_GW))
         pygame.display.set_caption("COVID-19 Game")
-        clock = pygame.time.Clock()
-        all_sprites = pygame.sprite.Group()
+        self.clock = pygame.time.Clock()
+        self.all_sprites = pygame.sprite.Group()
+        self.events = pygame.event.get()
+
 
         # set up asset folders
         game_folder = os.path.dirname(__file__)
@@ -71,6 +73,8 @@ class Model:
             self.object_list.append(Object(self.player_character.change_health, 5, mask_img))
         for egg in range(num_eggs):
             self.object_list.append(Object(self.player_character.change_zest, 5, egg_img))
+        for object in self.object_list:
+            self.all_sprites.add(object)
 
         self.available_objects = self.object_list.copy()
 
@@ -82,37 +86,55 @@ class Model:
         Handles collisions between the player and objects.
         """
         #make sure we aren't dead first
-        if player_character.health > 0 and player_character.zest > 0:
+        if self.player_character.health > 0 and self.player_character.zest > 0:
             #EVERYTHING DEALING WITH OBJECTS:
             #choose to add an object to screen
-            if random.randint(0,10) == 0:
+            if (random.randint(0,10) == 0) and (len(self.available_objects) > 0):
                 #potentially need to add thing to show the object
-                object_to_move = available_objects[random.randint(0,len(available_objects))]
-                available_objects.remove(object_to_move)
-                unavailable_objects.append(object_to_move)
+                object_to_move = self.available_objects[random.randint(0,len(self.available_objects)-1)]
+                self.available_objects.remove(object_to_move)
+                self.unavailable_objects.append(object_to_move)
             #move each object that is on screen
-            for object in unavailable_objects:
+            for object in self.unavailable_objects:
                 object.x -= k_default_move_value
                 #if the object has reached the edge of the screen, remove it
-                if object.x <=-3: #CHANGE NUMBER LATER!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                if object.x <=0:
                     #potentially need to add a thing to hide the object
-                    unavailable_objects.remove(object)
-                    available_objects.append(object)
+                    self.unavailable_objects.remove(object)
+                    self.available_objects.append(object)
                     object.x = WIDTH_GW/2
                     object.y = HEIGHT_GW - 20
 
             #EVERTHING DEALING WITH THE PLAYER
-            if event.key == pygame.K_LEFT:
-                self.player_character.x -= k_default_move_value
-            if event.key == pygame.K_RIGHT:
-                self.player_character.x += k_default_move_value
-            if event.key == pygame.K_UP:
-                self.player_character.jumping = True
-                self.player_character.jump_start_time = datetime.time.seconds
+            for event in self.events:
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_LEFT:
+                        self.player_character.x -= k_default_move_value
+                    if event.key == pygame.K_RIGHT:
+                        self.player_character.x += k_default_move_value
+                    if event.key == pygame.K_UP:
+                        self.player_character.jumping = True
+                        self.player_character.jump_start_time = datetime.time.seconds
             if self.player_character.jumping:
                 delta_t = datetime.time.seconds - self.player_character.jump_start_time
                 y = (k_intial_jump_velocity*delta_t) + (.5*k_gravity*(delta_t**2))
 
+            #update pygame display
+            # keep loop running at the right speed
+            self.clock.tick(FPS)
+            # Draw / render
+            self.game_screen.fill(BLACK)
+            self.all_sprites.draw(self.game_screen)
+            # after drawing everything, flip the display to make it visible to viewer
+            pygame.display.flip()
+
 
 if __name__ == '__main__':
     model = Model()
+    running = True
+    #for now just run for 5 seconds
+    x = datetime.datetime.now()
+    starttime = int(x.strftime("%s"))
+    while 5 > int(x.strftime("%s")) - starttime: # not(pygame.display.quit()):???
+        x = datetime.datetime.now()
+        model.run()

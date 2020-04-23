@@ -15,7 +15,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         num_tp: number of toilet paper rolls your character has
 
     """
-    def __init__(self, image, x=0, y=0, health=100, zest=0, num_tp=0):
+    def __init__(self, image, x=0, y=0, health=100, zest=100, num_tp=0):
         """
         Create a player character.
         """
@@ -30,7 +30,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.image = image
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2)
+        self.rect.center = (x, y)
 
 
 
@@ -87,7 +87,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
          #you would only call this function if your hits a toilet paper. in which case, would it not be easier to just add 1 instead of having this whole function?
         pass
 
-class Object:
+class Object(pygame.sprite.Sprite):
     """
     The different objects that interact with the player.
 

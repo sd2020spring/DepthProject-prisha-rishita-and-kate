@@ -12,28 +12,31 @@ HEIGHT_GW = 480 # height of our game window
 FPS = 30 # frames per second
 BLACK = (0,0,0)
 
-# set up asset folders
-game_folder = os.path.dirname(__file__)
-img_folder = os.path.join(game_folder, 'img')
-player_img = pygame.image.load(os.path.join(img_folder, 'human.png')).convert()
-tp_img = pygame.image.load(os.path.join(img_folder, 'tp.png')).convert()
-sick_img = pygame.image.load(os.path.join(img_folder, 'sick.png')).convert()
-ventilator_img = pygame.image.load(os.path.join(img_folder, 'ventilator.png')).convert()
-mask_img = pygame.image.load(os.path.join(img_folder, 'mask.png')).convert()
-guitar = pygame.image.load(os.path.join(img_folder, 'guitar.png')).convert()
-paint = pygame.image.load(os.path.join(img_folder, 'paint.png')).convert()
-egg = pygame.image.load(os.path.join(img_folder, 'egg.png')).convert()
-social = pygame.image.load(os.path.join(img_folder, 'social.png')).convert()
-
-#list of images of objects which decrease boredom
-dec_bore_objs = [guitar, paint, egg, social]
-
 # initialize pygame and create window
 pygame.init()
 game_screen = pygame.display.set_mode((WIDTH_GW, HEIGHT_GW))
 pygame.display.set_caption("COVID-19 Game")
 clock = pygame.time.Clock()
 all_sprites = pygame.sprite.Group()
+
+
+# set up asset folders
+game_folder = os.path.dirname(__file__)
+img_folder = os.path.join(game_folder, 'img')
+game_folder = os.path.dirname(__file__)
+img_folder = os.path.join(game_folder, 'img')
+player_img = pygame.image.load(os.path.join(img_folder, 'human.jpg')).convert()
+tp_img = pygame.image.load(os.path.join(img_folder, 'tp.jpg')).convert()
+sick_img = pygame.image.load(os.path.join(img_folder, 'sick.png')).convert()
+egg_img = pygame.image.load(os.path.join(img_folder, 'egg.png')).convert()
+mask_img = pygame.image.load(os.path.join(img_folder, 'mask.jpg')).convert()
+guitar = pygame.image.load(os.path.join(img_folder, 'egg.png')).convert()
+paint = pygame.image.load(os.path.join(img_folder, 'egg.png')).convert()
+egg = pygame.image.load(os.path.join(img_folder, 'egg.png')).convert()
+social = pygame.image.load(os.path.join(img_folder, 'egg.png')).convert()
+
+#list of images of objects which decrease boredom
+dec_bore_objs = [guitar, paint, egg, social]
 
 
 class Player(pygame.sprite.Sprite): #sprite for player
@@ -62,33 +65,33 @@ class Player(pygame.sprite.Sprite): #sprite for player
 class TP(pygame.sprite.Sprite): #sprite for toilet paper
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
-  		self.image = tp_img
-    	self.image.set_colorkey(BLACK)
+		self.image = tp_img
+		self.image.set_colorkey(BLACK)
 		self.rect = self.image.get_rect()
-  		self.rect.x = random.randrange(WIDTH_GW - self.rect.width) #TP will randomly appear in the GW frame
-    	self.rect.y = random.randrange(0, 50) #TP will stay near ground since we are working on non platformer version
-    	self.speedx = random.randrange(-5, 5) #TP will move around screen
+		self.rect.x = random.randrange(WIDTH_GW - self.rect.width) #TP will randomly appear in the GW frame
+		self.rect.y = random.randrange(0, 50) #TP will stay near ground since we are working on non platformer version
+		self.speedx = random.randrange(-5, 5) #TP will move around screen
 
 	def update(self): #if this is randomly selected for all objects, we can prob form this func outside and call in each class
-        	self.rect.x += self.speedx #speed in x direction gets randomized
-        	if self.rect.top > HEIGHT_GW:
-		    self.rect.x = random.randrange(WIDTH_GW - self.rect.width)
-		    self.rect.y = random.randrange(0, 50)
-		    self.speedx = random.randrange(-5, 5)
+		self.rect.x += self.speedx #speed in x direction gets randomized
+		if self.rect.top > HEIGHT_GW:
+			self.rect.x = random.randrange(WIDTH_GW - self.rect.width)
+			self.rect.y = random.randrange(0, 50)
+			self.speedx = random.randrange(-5, 5)
 
 class SickPerson(pygame.sprite.Sprite): #sprite for sick person
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
-      		self.image = sick_img
+		self.image = sick_img
 		self.image.set_colorkey(BLACK)
-      		self.rect = self.image.get_rect()
-      		self.rect.x = random.randrange(WIDTH_GW - self.rect.width) #TP will randomly appear in the GW frame
-        	self.rect.y = random.randrange(0, 50) #TP will stay near ground since we are working on non platformer version
-        	self.speedx = random.randrange(-5, 5) #TP will move around screen
+		self.rect = self.image.get_rect()
+		self.rect.x = random.randrange(WIDTH_GW - self.rect.width) #TP will randomly appear in the GW frame
+		self.rect.y = random.randrange(0, 50) #TP will stay near ground since we are working on non platformer version
+		self.speedx = random.randrange(-5, 5) #TP will move around screen
 
 	def update(self): #same movement as TP for the time being
-        	self.rect.x += self.speedx #speed in x direction gets randomized
-        	if self.rect.top > HEIGHT_GW:
+		self.rect.x += self.speedx #speed in x direction gets randomized
+		if self.rect.top > HEIGHT_GW:
 		    self.rect.x = random.randrange(WIDTH_GW - self.rect.width)
 		    self.rect.y = random.randrange(0, 50)
 		    self.speedx = random.randrange(-5, 5)
@@ -96,26 +99,26 @@ class SickPerson(pygame.sprite.Sprite): #sprite for sick person
 class Ventilator(pygame.sprite.Sprite): #sprite for ventilator
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
-      		self.image = ventilator_img
-	    	self.image.set_colorkey(BLACK)
-     		self.rect = self.image.get_rect()
-      		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+		self.image = ventilator_img
+		self.image.set_colorkey(BLACK)
+		self.rect = self.image.get_rect()
+		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
 
 class Mask(pygame.sprite.Sprite): #sprite for mask
-    	def __init__(self):
-     		pygame.sprite.Sprite.__init__(self)
-      		self.image = mask_img
-	    	self.image.set_colorkey(BLACK)
-      		self.rect = self.image.get_rect()
-      		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
+	def __init__(self):
+		pygame.sprite.Sprite.__init__(self)
+		self.image = mask_img
+		self.image.set_colorkey(BLACK)
+		self.rect = self.image.get_rect()
+		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
 
-class DecreaseBoredom(pygame.sprite.Sprite) #common sprite for all objects which decrease boredom
+class DecreaseBoredom(pygame.sprite.Sprite): #common sprite for all objects which decrease boredom
 	def __init__(self):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = random.choice(dec_bore_objs) #pick randomly from a list of images of objects
 		self.image.set_colorkey(BLACK)
 		self.rect = self.image.get_rect()
-		self.rect.center = #randomly place object on screen
+		self.rect.center =(WIDTH_GW / 2, HEIGHT_GW / 2) #randomly place object on screen
 
 
 # class Guitar(pygame.sprite.Sprite): #sprite for guitar
@@ -151,7 +154,7 @@ class DecreaseBoredom(pygame.sprite.Sprite) #common sprite for all objects which
 #       		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
 
 #it may be worth exploring collision of sprites with this code...
-BoredomCollisison = pygame.sprite.spritecollide(player, DecreaseBoredom, False)
+'''BoredomCollisison = pygame.sprite.spritecollide(player, DecreaseBoredom, False)
 if BoredomCollisison:
     change_zest(self, delta = 5) # this function is in the objects.py
 
@@ -170,10 +173,10 @@ if MaskCollision:
 VentilatorCollision = pygame.sprite.spritecollide(player, Ventilator, False)
 if VentilatorCollision:
 	#write function for this
-
+'''
 # Game Loop
 running = True
-while running:
+while 1==0:
     # Process input (events)
 
     # Update
@@ -184,8 +187,8 @@ while running:
     clock.tick(FPS)
 
     # Draw / render
-    screen.fill(BLACK)
-    all_sprites.draw(screen) #all updated sprites drawn
+
+ 	#all updated sprites drawn
 
     # after drawing everything, flip the display to make it visible to viewer
     pygame.display.flip()
