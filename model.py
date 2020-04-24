@@ -41,8 +41,6 @@ class Model:
         pygame.display.set_caption("COVID-19 Game")
         self.clock = pygame.time.Clock()
         self.all_sprites = pygame.sprite.Group()
-        self.events = pygame.event.get()
-
 
         # set up asset folders
         game_folder = os.path.dirname(__file__)
@@ -75,7 +73,6 @@ class Model:
             self.object_list.append(Object(self.player_character.change_zest, 5, egg_img))
         for object in self.object_list:
             self.all_sprites.add(object)
-
         self.available_objects = self.object_list.copy()
 
 
@@ -106,7 +103,7 @@ class Model:
                     object.y = HEIGHT_GW - 20
 
             #EVERTHING DEALING WITH THE PLAYER
-            for event in self.events:
+            for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         self.player_character.x -= k_default_move_value
@@ -114,9 +111,10 @@ class Model:
                         self.player_character.x += k_default_move_value
                     if event.key == pygame.K_UP:
                         self.player_character.jumping = True
-                        self.player_character.jump_start_time = datetime.time.seconds
+                        self.player_character.jump_start_time = datetime.datetime.now()
             if self.player_character.jumping:
-                delta_t = datetime.time.seconds - self.player_character.jump_start_time
+                t = datetime.datetime.now()
+                delta_t = int(t.strftime("%s")) - int(self.player_character.jump_start_time.seconds.strftime("%s"))
                 y = (k_intial_jump_velocity*delta_t) + (.5*k_gravity*(delta_t**2))
 
             #update pygame display
@@ -132,9 +130,8 @@ class Model:
 if __name__ == '__main__':
     model = Model()
     running = True
-    #for now just run for 5 seconds
-    x = datetime.datetime.now()
-    starttime = int(x.strftime("%s"))
-    while 5 > int(x.strftime("%s")) - starttime: # not(pygame.display.quit()):???
-        x = datetime.datetime.now()
-        model.run()
+    while running:
+        for event in pygame.event.get():
+            model.run()
+            if event.type == pygame.QUIT:
+                running = False
