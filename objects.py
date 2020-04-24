@@ -32,6 +32,10 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
 
+    def update(self):
+        """updates the player position based on modified x and y coordinates
+        """
+        self.rect = (self.x,self.y)
 
 
     def change_health(self, delta = 20):
@@ -118,6 +122,12 @@ class Object(pygame.sprite.Sprite):
         self.image = image
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
+
+
+    def update(self):
+        """updates the object position based on modified x and y coordinates
+        """
+        self.rect = (self.x,self.y)
 
 
     def contact_player(self):

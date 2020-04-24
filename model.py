@@ -13,8 +13,8 @@ import os
 k_default_move_value = 1
 k_intial_jump_velocity = .5
 k_gravity = -9.8
-WIDTH_GW = 360  # width of our game window
-HEIGHT_GW = 480 # height of our game window
+WIDTH_GW = 1024  # width of our game window
+HEIGHT_GW = 600 # height of our game window
 FPS = 30 # frames per second
 BLACK = (0,0,0)
 
@@ -62,6 +62,7 @@ class Model:
         self.unavailable_objects = []
         self.object_locations = []
         self.player_character = PlayerCharacter(player_img)
+        self.events = pygame.event.get()
 
         for tp in range(num_tp):
             self.object_list.append(Object(self.player_character.get_toilet_paper, 1, tp_img))
@@ -84,9 +85,11 @@ class Model:
         """
         #make sure we aren't dead first
         if self.player_character.health > 0 and self.player_character.zest > 0:
+            #update any inputs
+            self.events = pygame.event.get()
             #EVERYTHING DEALING WITH OBJECTS:
             #choose to add an object to screen
-            if (random.randint(0,10) == 0) and (len(self.available_objects) > 0):
+            if (random.randint(0,100) == 0) and (len(self.available_objects) > 0):
                 #potentially need to add thing to show the object
                 object_to_move = self.available_objects[random.randint(0,len(self.available_objects)-1)]
                 self.available_objects.remove(object_to_move)
@@ -103,7 +106,7 @@ class Model:
                     object.y = HEIGHT_GW - 20
 
             #EVERTHING DEALING WITH THE PLAYER
-            for event in pygame.event.get():
+            for event in self.events:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT:
                         self.player_character.x -= k_default_move_value
@@ -114,13 +117,15 @@ class Model:
                         self.player_character.jump_start_time = datetime.datetime.now()
             if self.player_character.jumping:
                 t = datetime.datetime.now()
-                delta_t = int(t.strftime("%s")) - int(self.player_character.jump_start_time.seconds.strftime("%s"))
+                delta_t = int(t.strftime("%s")) - int(self.player_character.jump_start_time.strftime("%s"))
                 y = (k_intial_jump_velocity*delta_t) + (.5*k_gravity*(delta_t**2))
 
             #update pygame display
             # keep loop running at the right speed
             self.clock.tick(FPS)
             # Draw / render
+            self.player_character.update()
+            self.all_sprites.update()
             self.game_screen.fill(BLACK)
             self.all_sprites.draw(self.game_screen)
             # after drawing everything, flip the display to make it visible to viewer
@@ -131,7 +136,7 @@ if __name__ == '__main__':
     model = Model()
     running = True
     while running:
-        for event in pygame.event.get():
-            model.run()
+        model.run()
+        for event in model.events:
             if event.type == pygame.QUIT:
                 running = False
