@@ -15,7 +15,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         num_tp: number of toilet paper rolls your character has
 
     """
-    def __init__(self, image, x=0, y=0, health=100, zest=100, num_tp=0):
+    def __init__(self, image, x=WIDTH_GW/2, y=HEIGHT_GW-200, health=100, zest=100, num_tp=0):
         """
         Create a player character.
         """
@@ -108,7 +108,7 @@ class Object(pygame.sprite.Sprite):
         activities: decrease zest by 5
         ventilator: increases health by 100
     """
-    def __init__(self, delta_function, delta_value, image, x=320, y=270):
+    def __init__(self, delta_function, delta_value, image, x=WIDTH_GW, y=HEIGHT_GW - 200):
         """
         Create an object.
         """

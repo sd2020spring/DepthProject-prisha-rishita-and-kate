@@ -74,6 +74,7 @@ class Model:
             self.object_list.append(Object(self.player_character.change_zest, 5, egg_img))
         for object in self.object_list:
             self.all_sprites.add(object)
+        self.all_sprites.add(self.player_character)
         self.available_objects = self.object_list.copy()
 
 
@@ -102,8 +103,8 @@ class Model:
                     #potentially need to add a thing to hide the object
                     self.unavailable_objects.remove(object)
                     self.available_objects.append(object)
-                    object.x = WIDTH_GW/2
-                    object.y = HEIGHT_GW - 20
+                    object.x = WIDTH_GW
+                    object.y = HEIGHT_GW - 200
 
             #EVERTHING DEALING WITH THE PLAYER
             for event in self.events:
@@ -124,7 +125,6 @@ class Model:
             # keep loop running at the right speed
             self.clock.tick(FPS)
             # Draw / render
-            self.player_character.update()
             self.all_sprites.update()
             self.game_screen.fill(BLACK)
             self.all_sprites.draw(self.game_screen)
