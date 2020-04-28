@@ -31,11 +31,36 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+        
+    def jump(self):
+        # jump only if standing on a platform
+        self.rect.x += 1
+        hits = pg.sprite.spritecollide(self, self.game.platforms, False)
+        self.rect.x -= 1
+        if hits:
+            self.vel.y = -20
 
     def update(self):
         """updates the player position based on modified x and y coordinates
         """
-        self.rect = (self.x,self.y)
+        #self.rect = (self.x,self.y)
+        self.acc = vec(0, PLAYER_GRAV)
+        keys = pg.key.get_pressed()
+        if keys[pg.K_LEFT]:
+            self.acc.x = -PLAYER_ACC
+        if keys[pg.K_RIGHT]:
+            self.acc.x = PLAYER_ACC
+
+        # apply friction
+        self.acc.x += self.vel.x * PLAYER_FRICTION
+        # equations of motion
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
+        # wrap around the sides of the screen
+        if self.pos.x > WIDTH:
+            self.pos.x = 0
+        if self.pos.x < 0:
+            self.pos.x = WIDTH
 
 
     def change_health(self, delta = 20):
