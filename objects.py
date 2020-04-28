@@ -1,26 +1,28 @@
 """Creates the player character class and objects class"""
 from model import *
 import pygame
+vec = pygame.math.Vector2
+
+#Constants
+PLAYER_ACC = .8
+PLAYER_GRAV = 0
+PLAYER_FRICTION = .3
 
 class PlayerCharacter(pygame.sprite.Sprite):
     """
-    The player character of a top-down turn-based game.
+    The player character of a platformer style game
 
     Attributes:
-        x: the x-location of the character
-        y: the y-location of the character
         display_char: the character to display for this character
         health: how much health the character has left (out of 100)
         zest: how bored your character is (max 100)
         num_tp: number of toilet paper rolls your character has
 
     """
-    def __init__(self, image, x=WIDTH_GW/2, y=HEIGHT_GW-200, health=100, zest=100, num_tp=0):
+    def __init__(self, image, health=100, zest=100, num_tp=0):
         """
         Create a player character.
         """
-        self.x = x
-        self.y = y
         self.health = health
         self.zest = zest
         self.num_tp = num_tp
@@ -30,37 +32,40 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.image = image
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
-        
+        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-200)#nuber should be changed
+        self.pos = vec(self.rect.center[0],self.rect.center[1])
+        self.vel = vec(0,0)
+        self.acc = vec(0,0)
+
+
     def jump(self):
         # jump only if standing on a platform
-        self.rect.x += 1
-        hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-        self.rect.x -= 1
-        if hits:
-            self.vel.y = -20
+        #self.rect.x += 1
+        #hits = pg.sprite.spritecollide(self, self.game.platforms, False)
+        #self.rect.x -= 1
+        #if hits:
+        self.vel.y = -20
+
 
     def update(self):
         """updates the player position based on modified x and y coordinates
         """
-        #self.rect = (self.x,self.y)
         self.acc = vec(0, PLAYER_GRAV)
-        keys = pg.key.get_pressed()
-        if keys[pg.K_LEFT]:
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_LEFT]:
             self.acc.x = -PLAYER_ACC
-        if keys[pg.K_RIGHT]:
+        if keys[pygame.K_RIGHT]:
             self.acc.x = PLAYER_ACC
+        if keys[pygame.K_UP]:
+            self.jump()
 
         # apply friction
         self.acc.x += self.vel.x * PLAYER_FRICTION
         # equations of motion
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
-        # wrap around the sides of the screen
-        if self.pos.x > WIDTH:
-            self.pos.x = 0
-        if self.pos.x < 0:
-            self.pos.x = WIDTH
+
+        self.rect = self.pos
 
 
     def change_health(self, delta = 20):

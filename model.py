@@ -15,8 +15,11 @@ k_intial_jump_velocity = .5
 k_gravity = -9.8
 WIDTH_GW = 1024  # width of our game window
 HEIGHT_GW = 600 # height of our game window
-FPS = 30 # frames per second
+FPS = 30 # frames per second - try and do dynamically?
 BLACK = (0,0,0)
+PLAYER_ACC = .2
+PLAYER_GRAV = 0
+PLAYER_FRICTION = 9
 
 class Model:
     """
@@ -106,20 +109,6 @@ class Model:
                     object.x = WIDTH_GW
                     object.y = HEIGHT_GW - 200
 
-            #EVERTHING DEALING WITH THE PLAYER
-            for event in self.events:
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
-                        self.player_character.x -= k_default_move_value
-                    if event.key == pygame.K_RIGHT:
-                        self.player_character.x += k_default_move_value
-                    if event.key == pygame.K_UP:
-                        self.player_character.jumping = True
-                        self.player_character.jump_start_time = datetime.datetime.now()
-            if self.player_character.jumping:
-                t = datetime.datetime.now()
-                delta_t = int(t.strftime("%s")) - int(self.player_character.jump_start_time.strftime("%s"))
-                y = (k_intial_jump_velocity*delta_t) + (.5*k_gravity*(delta_t**2))
 
             #update pygame display
             # keep loop running at the right speed
