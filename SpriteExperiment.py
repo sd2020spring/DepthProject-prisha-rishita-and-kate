@@ -153,14 +153,14 @@ class DecreaseBoredom(pygame.sprite.Sprite): #common sprite for all objects whic
 #      		self.rect = self.image.get_rect()
 #       		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
 
-#it may be worth exploring collision of sprites with this code...
-'''BoredomCollisison = pygame.sprite.spritecollide(player, DecreaseBoredom, False)
+#collisions
+BoredomCollisison = pygame.sprite.spritecollide(player, DecreaseBoredom, False)
 if BoredomCollisison:
     change_zest(self, delta = 5) # this function is in the objects.py
 
 SickCollision = pygame.sprite.spritecollide(player, SickPerson, False)
 if SickCollision:
-    change_health(self, delta = 20) # this function is in the objects.py
+	change_health(self, delta = 20) # this function is in the objects.py
 
 TPCollision =  pygame.sprite.spritecollide(player, TP, False)
 if TPCollision:
@@ -173,7 +173,7 @@ if MaskCollision:
 VentilatorCollision = pygame.sprite.spritecollide(player, Ventilator, False)
 if VentilatorCollision:
 	#write function for this
-'''
+
 # Game Loop
 running = True
 while 1==0:
