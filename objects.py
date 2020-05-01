@@ -64,7 +64,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.rect = self.pos
 
 
-    def change_health(self, delta = 20):
+    def corona_contracted(self, delta = 20):
         """
         Changes the health of the character
 
@@ -116,7 +116,19 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.num_tp += 1
          #you would only call this function if your hits a toilet paper. in which case, would it not be easier to just add 1 instead of having this whole function?
         pass
-
+    
+    def health_improvement(self, health, delta):
+        """
+        If player collects an object which improves their health (mask or ventilator), their health % increases.
+        If health + delta would increase health above 100%, health does not improve at all.
+        
+        health: player health
+        delta: % by which health increases 
+        """
+        if health + delta <= 100:
+            health += delta 
+        pass 
+    
 class Object(pygame.sprite.Sprite):
     """
     The different objects that interact with the player.
