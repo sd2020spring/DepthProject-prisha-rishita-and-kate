@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link id="main-sheet" rel="stylesheet" href="https://app.saul.angry.ventures/themes/default/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="main.css" media="screen"/>
 </head>
 
 <body class="">
