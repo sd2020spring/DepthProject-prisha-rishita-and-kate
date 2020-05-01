@@ -83,6 +83,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         if self.health <= k_max_health and self.health > 0:
             self.health = self.health - delta
         return True
+        draw_text_on_screen(screen, str(self.health), 20, WIDTH/4, 10) #display health on screen
 
         # Raise ValueError if delta isn't integer
         pass
@@ -104,18 +105,19 @@ class PlayerCharacter(pygame.sprite.Sprite):
         if self.zest > 0 and self.zest < k_max_zest:
             self.zest += delta
         return True
+        draw_text_on_screen(screen, str(self.zest), 20, 3*WIDTH/4, 10) #display zest on screen
 
         # Raise ValueError if delta isn't integer
         pass
 
     def get_toilet_paper(self, num_tp):
+       #you would only call this function if your hits a toilet paper. in which case, would it not be easier to just add 1 instead of having this whole function?
         """
         Gets another roll of toilet paper.
         """
         # Increase character's toilet paper by one
-
         self.num_tp += 1
-         #you would only call this function if your hits a toilet paper. in which case, would it not be easier to just add 1 instead of having this whole function?
+        draw_text_on_screen(screen, str(self.num_tp), 20, WIDTH/2, 10) #display num of tp on screen
         pass
 
     def health_improvement(self, delta):
@@ -128,6 +130,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         """
         if self.health + delta <= 100:
             self.health += delta
+        draw_text_on_screen(screen, str(self.health), 20, WIDTH/4, 10) #display health on screen
         pass
 
 class Platform(pygame.sprite.Sprite):
