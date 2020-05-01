@@ -17,9 +17,9 @@ WIDTH_GW = 1024  # width of our game window
 HEIGHT_GW = 600 # height of our game window
 FPS = 30 # frames per second - try and do dynamically?
 BLACK = (0,0,0)
-PLAYER_ACC = .2
+PLAYER_ACC = 1
 PLAYER_GRAV = 0
-PLAYER_FRICTION = 9
+PLAYER_FRICTION = -.5
 
 class Model:
     """

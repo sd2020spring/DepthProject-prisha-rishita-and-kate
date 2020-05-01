@@ -3,10 +3,6 @@ from model import *
 import pygame
 vec = pygame.math.Vector2
 
-#Constants
-PLAYER_ACC = .8
-PLAYER_GRAV = 0
-PLAYER_FRICTION = .3
 
 class PlayerCharacter(pygame.sprite.Sprite):
     """
