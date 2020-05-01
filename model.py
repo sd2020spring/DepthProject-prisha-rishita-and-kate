@@ -137,9 +137,36 @@ class Model:
 
 if __name__ == '__main__':
     model = Model()
+    game_over = False
     running = True
     while running:
         model.run()
         for event in model.events:
             if event.type == pygame.QUIT:
-                running = False
+                pygame.quit()
+                running = False   
+            if game_over = True:#this was just added. we need to make this equal false when player dies of corona or boredom. havent done that yet.
+                home_screen()
+                game_over = False
+                health = 100
+                zest = 100
+                num_tp = 0
+                all_sprites = pygame.sprite.Group() #must return all sprites to their original spot. Don't know if this does it all        
+                
+#rishita added this here. plis feel free to move it whereever it makes most sense to have this 
+def home_screen():
+    screen.blit(background, background_rect)
+    draw_text(screen, "Can You Beat Corona?", 64, WIDTH / 2, HEIGHT / 4)
+    draw_text(screen, "Press a key to begin", 18, WIDTH / 2, HEIGHT * 3/8)
+    draw_text(screen, "Arrow keys move player. Collect as many toilet paper rolls as you can before dying of corona or boredom.", 22, WIDTH / 2, HEIGHT / 2)
+    draw_text(screen, "Health: Start at 100%, decreases if player collides with sick person, increases if player collects masks/ ventilators.", 18, WIDTH / 2, HEIGHT * 3/4)
+    draw_text(screen, "Zest for Life: Start at 100%, decreases over time, increases if player collects eggs/social media icons/paint brushes/guitars.", 18, WIDTH / 2, HEIGHT * 7/8)
+    pygame.display.flip()
+# dont know if we would need this code below
+    waiting = True
+    while waiting:
+        clock.tick(FPS)  
+            if event.type == pygame.KEYUP:
+                waiting = False
+
+          
