@@ -241,3 +241,20 @@ footer {
         margin-left: 10px;
     }
 
+#home > .overlay > .text-center > .row > .col-sm-offset-3 > .logo-center {
+    margin: 20px 47.5px 70px 47.5px;
+    border-color: #000000;
+    border-width: 2px 2px 2px 2px;
+}
+
+#home > .overlay > .text-center > .row > .col-sm-offset-3 > .logo-center {
+    margin: 20px 47.5px 70px 47.5px;
+    border-color: #ffffff;
+    border-width: 2px 2px 2px 2px;
+}
+
+#home > .overlay > .text-center > .row > .col-sm-offset-3 > .logo-center {
+    margin: 20px 47.5px 70px 47.5px;
+    border-color: #ffffff;
+    border-width: 2px 2px 2px 2px;
+}
