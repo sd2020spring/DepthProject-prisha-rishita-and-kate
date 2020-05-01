@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-    <link id="main-sheet" rel="stylesheet" href="https://app.saul.angry.ventures/themes/default/stylesheet.css">
-    <link rel="stylesheet" type="text/css" href="main.css" media="screen"/>
+    <link id="main-sheet" rel="stylesheet" type="text/css" href="main.css">
 </head>
 
 <body class="">
@@ -18,7 +17,7 @@
             <div class="container text-center">
                 <div class="row ">
                     <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
-                        <h1 class="logo-center">Corona-<br>Virus<br>Game<br></h1>
+                        <h1 class="logo-center" id="">CoronaVirus<br>Game<br></h1>
                         <h4></h4>
                         <h4 id="this-is-our-interpretation-of-a-platformer-game-surrounding-the">This is our interpretation of a platformer game surrounding the Coronavirus<br></h4>
 
@@ -224,44 +223,45 @@
     <!-- CLIENTS SECTION START-->
     <section id="clients">
         <div class="overlay">
-            <div class="container">
-                <div class="row text-center">
+            <div class="row text-center">
 
-                    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12  client-cover">
-                        <div id="carousel-clients" class="carousel slide" data-ride="carousel">
+                <div class="col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12  client-cover col-lg-6">
+                    <div id="carousel-clients" class="carousel slide" data-ride="carousel">
 
-                            <div class="carousel-inner text-center">
-                                <div class="item active">
-                                    <img src="templates/product-launch/images/c1.jpg" class="img-circle clients-img" alt="">
-                                    <h4></h4>
-                                    <h4 id="best-accomplishment-to-this-day-successfully-dying-in-the-coron">"...best accomplishment to this day: successfully dying in the corona game..."<br></h4>
-                                    <h3>- Kate Mackowiak </h3>
+                        <div class="carousel-inner text-center">
+                            <div class="item active">
+                                <img src="templates/product-launch/images/c1.jpg" class="img-circle clients-img" alt="">
+                                <h4></h4>
+                                <h4 id="best-accomplishment-to-this-day-successfully-dying-in-the-coron">"...best accomplishment to this day: successfully dying in the corona game..."<br></h4>
+                                <h3>- Kate Mackowiak </h3>
 
-                                </div>
-                                <div class="item">
+                            </div>
+                            <div class="item">
 
-                                    <img src="templates/product-launch/images/c2.jpg" class="img-circle clients-img" alt="">
-                                    <h4>Pellentesque posuere malesuada venenatis. 
+                                <img src="templates/product-launch/images/c2.jpg" class="img-circle clients-img" alt="">
+                                <h4>Pellentesque posuere malesuada venenatis. 
                                 Donec laoreet dapibus nulla,
                              Pellentesque posuere malesuada venenatis.
                                     </h4>
-                                    <h3>-  Romaust Sonaloia </h3>
-                                </div>
-                                <div class="item">
-                                    <img src="templates/product-launch/images/c3.jpg" class="img-circle clients-img" alt="">
-                                    <h4>Pellentesque posuere malesuada venenatis. 
+                                <h3>-  Romaust Sonaloia </h3>
+                            </div>
+                            <div class="item">
+                                <img src="templates/product-launch/images/c3.jpg" class="img-circle clients-img" alt="">
+                                <h4>Pellentesque posuere malesuada venenatis. 
                                 Donec laoreet dapibus nulla,
                              Pellentesque posuere malesuada venenatis.
                                     </h4>
-                                    <h3>-  Tim Liyaeo Pard </h3>
-
-                                </div>
+                                <h3>-  Tim Liyaeo Pard </h3>
 
                             </div>
 
                         </div>
+
                     </div>
                 </div>
+            </div>
+            <div class="container">
+
 
             </div>
         </div>
@@ -322,6 +322,7 @@
     <!-- FOOTER SECTION START-->
 
     <!-- FOOTER SECTION END-->
+    <iframe style="visibility: hidden; position: absolute; top: -10000px; left: -10000px;" scrolling="no" width="986" height="654"></iframe>
 </body>
 
 </html>
