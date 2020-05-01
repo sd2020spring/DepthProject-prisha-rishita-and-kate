@@ -13,11 +13,15 @@ import os
 k_default_move_value = 1
 k_intial_jump_velocity = .5
 k_gravity = -9.8
+k_max_health = 100
+k_max_zest = 100
+k_floor_offset = 200
+k_wall_offset = 50
 WIDTH_GW = 1024  # width of our game window
 HEIGHT_GW = 600 # height of our game window
 FPS = 30 # frames per second - try and do dynamically?
 BLACK = (0,0,0)
-PLAYER_ACC = 1
+PLAYER_ACC = 3
 PLAYER_GRAV = 0
 PLAYER_FRICTION = -.5
 
@@ -44,6 +48,7 @@ class Model:
         pygame.display.set_caption("COVID-19 Game")
         self.clock = pygame.time.Clock()
         self.all_sprites = pygame.sprite.Group()
+        self.object_sprites = pygame.sprite.Group()
 
         # set up asset folders
         game_folder = os.path.dirname(__file__)
@@ -70,13 +75,14 @@ class Model:
         for tp in range(num_tp):
             self.object_list.append(Object(self.player_character.get_toilet_paper, 1, tp_img))
         for sick_people in range(num_sick_people):
-            self.object_list.append(Object(self.player_character.change_health, 15, sick_img))
+            self.object_list.append(Object(self.player_character.corona_contracted, 15, sick_img))
         for mask in range(num_masks):
-            self.object_list.append(Object(self.player_character.change_health, 5, mask_img))
+            self.object_list.append(Object(self.player_character.health_improvement, 5, mask_img))
         for egg in range(num_eggs):
             self.object_list.append(Object(self.player_character.change_zest, 5, egg_img))
         for object in self.object_list:
             self.all_sprites.add(object)
+            self.object_sprites.add(object)
         self.all_sprites.add(self.player_character)
         self.available_objects = self.object_list.copy()
 
@@ -87,10 +93,11 @@ class Model:
         game state.
         Handles collisions between the player and objects.
         """
-        #make sure we aren't dead first
+        #update any inputs, as well as check if the game has been closed
+        self.events = pygame.event.get()
+
+        #make sure we aren't dead before doing anything else
         if self.player_character.health > 0 and self.player_character.zest > 0:
-            #update any inputs
-            self.events = pygame.event.get()
             #EVERYTHING DEALING WITH OBJECTS:
             #choose to add an object to screen
             if (random.randint(0,100) == 0) and (len(self.available_objects) > 0):
@@ -106,8 +113,15 @@ class Model:
                     #potentially need to add a thing to hide the object
                     self.unavailable_objects.remove(object)
                     self.available_objects.append(object)
-                    object.x = WIDTH_GW
-                    object.y = HEIGHT_GW - 200
+                    object.restart()
+
+            object_collissions = pygame.sprite.spritecollide(self.player_character, self.object_sprites, False)
+            for object in object_collissions:
+                if object in self.unavailable_objects:
+                    self.unavailable_objects.remove(object)
+                    self.available_objects.append(object)
+                object.contact_player()
+                object.restart()
 
 
             #update pygame display

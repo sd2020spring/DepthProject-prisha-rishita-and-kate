@@ -1,7 +1,6 @@
 """Creates the player character class and objects class"""
 from model import *
 import pygame
-vec = pygame.math.Vector2
 
 
 class PlayerCharacter(pygame.sprite.Sprite):
@@ -28,10 +27,10 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.image = image
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-200)#nuber should be changed
-        self.pos = vec(self.rect.center[0],self.rect.center[1])
-        self.vel = vec(0,0)
-        self.acc = vec(0,0)
+        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_floor_offset)
+        self.pos = pygame.math.Vector2(self.rect.center[0],self.rect.center[1])
+        self.vel = pygame.math.Vector2(0,0)
+        self.acc = pygame.math.Vector2(0,0)
 
 
     def jump(self):
@@ -46,7 +45,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
     def update(self):
         """updates the player position based on modified x and y coordinates
         """
-        self.acc = vec(0, PLAYER_GRAV)
+        self.acc = pygame.math.Vector2(0, PLAYER_GRAV)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.acc.x = -PLAYER_ACC
@@ -61,7 +60,9 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
 
-        self.rect = self.pos
+        self.rect.center = self.pos
+        #print('health',self.health)
+        #print('tp', self.num_tp)
 
 
     def corona_contracted(self, delta = 20):
@@ -79,7 +80,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
 
         if self.health + delta <= 0:
             return False
-        if self.health <= self.max_health and self.health > 0:
+        if self.health <= k_max_health and self.health > 0:
             self.health = self.health - delta
         return True
 
@@ -98,9 +99,9 @@ class PlayerCharacter(pygame.sprite.Sprite):
         Raises:
             ValueError: if delta isn't an integer         #don't know how to raise errors
         """
-        if self.zest >= self.max_zest:
-            return false
-        if self.zest > 0 and self.zest < self.max_zest:
+        if self.zest >= k_max_zest:
+            return False
+        if self.zest > 0 and self.zest < k_max_zest:
             self.zest += delta
         return True
 
@@ -116,19 +117,37 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.num_tp += 1
          #you would only call this function if your hits a toilet paper. in which case, would it not be easier to just add 1 instead of having this whole function?
         pass
-    
-    def health_improvement(self, health, delta):
+
+    def health_improvement(self, delta):
         """
         If player collects an object which improves their health (mask or ventilator), their health % increases.
         If health + delta would increase health above 100%, health does not improve at all.
-        
+
         health: player health
-        delta: % by which health increases 
+        delta: % by which health increases
         """
-        if health + delta <= 100:
-            health += delta 
-        pass 
-    
+        if self.health + delta <= 100:
+            self.health += delta
+        pass
+
+class Platform(pygame.sprite.Sprite):
+    """
+    Platforms, including the ground, that the player character can walk on and jump off of
+    """
+    def __init__(self, image, x=WIDTH_GW/2, y=HEIGHT_GW - k_floor_offset):
+        """
+        Create an object.
+        """
+        # Initialize variables
+        self.x = x
+        self.y = y
+        pygame.sprite.Sprite.__init__(self)
+        self.image = image
+        self.image.set_colorkey(BLACK)
+        self.rect = self.image.get_rect()
+        self.rect.center = (x,y)
+
+
 class Object(pygame.sprite.Sprite):
     """
     The different objects that interact with the player.
@@ -146,26 +165,26 @@ class Object(pygame.sprite.Sprite):
         activities: decrease zest by 5
         ventilator: increases health by 100
     """
-    def __init__(self, delta_function, delta_value, image, x=WIDTH_GW, y=HEIGHT_GW - 200):
+    def __init__(self, delta_function, delta_value, image, x=WIDTH_GW + k_wall_offset, y=HEIGHT_GW - k_floor_offset):
         """
         Create an object.
         """
         # Initialize variables
         self.delta_function = delta_function
         self.delta_value = delta_value
-        self.type = type
         self.x = x
         self.y = y
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
+        self.rect.center = (x,y)
 
 
     def update(self):
         """updates the object position based on modified x and y coordinates
         """
-        self.rect = (self.x,self.y)
+        self.rect.center = (self.x,self.y)
 
 
     def contact_player(self):
@@ -174,5 +193,10 @@ class Object(pygame.sprite.Sprite):
 
         Returns: None
         """
-        #Call delta_function with delta_value as argument
-        pass
+        self.delta_function(self.delta_value)
+
+    def restart(self):
+        """move object back to starting location after contact or reaching end of screen
+        """
+        self.x=WIDTH_GW + k_wall_offset
+        self.y=HEIGHT_GW - k_floor_offset
