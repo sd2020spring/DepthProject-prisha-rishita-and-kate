@@ -1,237 +1,345 @@
 <!DOCTYPE html>
-<html lang="en">
-<title>W3.CSS Template</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body {font-family: "Lato", sans-serif}
-.mySlides {display: none}
-</style>
-<body>
+<html>
 
-<!-- Navbar -->
-<div class="w3-top">
-  <div class="w3-bar w3-black w3-card">
-    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="#" class="w3-bar-item w3-button w3-padding-large">HOME</a>
-    <a href="#band" class="w3-bar-item w3-button w3-padding-large w3-hide-small">BAND</a>
-    <a href="#tour" class="w3-bar-item w3-button w3-padding-large w3-hide-small">TOUR</a>
-    <a href="#contact" class="w3-bar-item w3-button w3-padding-large w3-hide-small">CONTACT</a>
-    <div class="w3-dropdown-hover w3-hide-small">
-      <button class="w3-padding-large w3-button" title="More">MORE <i class="fa fa-caret-down"></i></button>     
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="#" class="w3-bar-item w3-button">Merchandise</a>
-        <a href="#" class="w3-bar-item w3-button">Extras</a>
-        <a href="#" class="w3-bar-item w3-button">Media</a>
-      </div>
-    </div>
-    <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
-  </div>
-</div>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link id="main-sheet" rel="stylesheet" href="https://app.saul.angry.ventures/themes/default/stylesheet.css">
+</head>
 
-<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-  <a href="#band" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">BAND</a>
-  <a href="#tour" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">TOUR</a>
-  <a href="#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CONTACT</a>
-  <a href="#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">MERCH</a>
-</div>
+<body class="">
 
-<!-- Page content -->
-<div class="w3-content" style="max-width:2000px;margin-top:46px">
+    <!--HOME SECTION START  -->
+    <div id="home">
+        <div class="overlay">
+            <div class="container text-center">
+                <div class="row ">
+                    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12">
+                        <h1 class="logo-center">Coronavirus Game<br></h1>
+                        <h4>This is our interpretation of a platformer game surrounding the Coronavirus<br></h4>
+                        <a href="#download" class="btn btn-launch">See More</a>
+                    </div>
+                </div>
 
-  <!-- Automatic Slideshow Images -->
-  <div class="mySlides w3-display-container w3-center">
-    <img src="/w3images/la.jpg" style="width:100%">
-    <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
-      <h3>Los Angeles</h3>
-      <p><b>We had the best time playing at Venice Beach!</b></p>   
-    </div>
-  </div>
-  <div class="mySlides w3-display-container w3-center">
-    <img src="/w3images/ny.jpg" style="width:100%">
-    <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
-      <h3>New York</h3>
-      <p><b>The atmosphere in New York is lorem ipsum.</b></p>    
-    </div>
-  </div>
-  <div class="mySlides w3-display-container w3-center">
-    <img src="/w3images/chicago.jpg" style="width:100%">
-    <div class="w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small">
-      <h3>Chicago</h3>
-      <p><b>Thank you, Chicago - A night we won't forget.</b></p>    
-    </div>
-  </div>
-
-  <!-- The Band Section -->
-  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
-    <h2 class="w3-wide">THE BAND</h2>
-    <p class="w3-opacity"><i>We love music</i></p>
-    <p class="w3-justify">We have created a fictional band website. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-      ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum consectetur
-      adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    <div class="w3-row w3-padding-32">
-      <div class="w3-third">
-        <p>Name</p>
-        <img src="/w3images/bandmember.jpg" class="w3-round w3-margin-bottom" alt="Random Name" style="width:60%">
-      </div>
-      <div class="w3-third">
-        <p>Name</p>
-        <img src="/w3images/bandmember.jpg" class="w3-round w3-margin-bottom" alt="Random Name" style="width:60%">
-      </div>
-      <div class="w3-third">
-        <p>Name</p>
-        <img src="/w3images/bandmember.jpg" class="w3-round" alt="Random Name" style="width:60%">
-      </div>
-    </div>
-  </div>
-
-  <!-- The Tour Section -->
-  <div class="w3-black" id="tour">
-    <div class="w3-container w3-content w3-padding-64" style="max-width:800px">
-      <h2 class="w3-wide w3-center">TOUR DATES</h2>
-      <p class="w3-opacity w3-center"><i>Remember to book your tickets!</i></p><br>
-
-      <ul class="w3-ul w3-border w3-white w3-text-grey">
-        <li class="w3-padding">September <span class="w3-tag w3-red w3-margin-left">Sold out</span></li>
-        <li class="w3-padding">October <span class="w3-tag w3-red w3-margin-left">Sold out</span></li>
-        <li class="w3-padding">November <span class="w3-badge w3-right w3-margin-right">3</span></li>
-      </ul>
-
-      <div class="w3-row-padding w3-padding-32" style="margin:0 -16px">
-        <div class="w3-third w3-margin-bottom">
-          <img src="/w3images/newyork.jpg" alt="New York" style="width:100%" class="w3-hover-opacity">
-          <div class="w3-container w3-white">
-            <p><b>New York</b></p>
-            <p class="w3-opacity">Fri 27 Nov 2016</p>
-            <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
-            <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
-          </div>
-        </div>
-        <div class="w3-third w3-margin-bottom">
-          <img src="/w3images/paris.jpg" alt="Paris" style="width:100%" class="w3-hover-opacity">
-          <div class="w3-container w3-white">
-            <p><b>Paris</b></p>
-            <p class="w3-opacity">Sat 28 Nov 2016</p>
-            <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
-            <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
-          </div>
-        </div>
-        <div class="w3-third w3-margin-bottom">
-          <img src="/w3images/sanfran.jpg" alt="San Francisco" style="width:100%" class="w3-hover-opacity">
-          <div class="w3-container w3-white">
-            <p><b>San Francisco</b></p>
-            <p class="w3-opacity">Sun 29 Nov 2016</p>
-            <p>Praesent tincidunt sed tellus ut rutrum sed vitae justo.</p>
-            <button class="w3-button w3-black w3-margin-bottom" onclick="document.getElementById('ticketModal').style.display='block'">Buy Tickets</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Ticket Modal -->
-  <div id="ticketModal" class="w3-modal">
-    <div class="w3-modal-content w3-animate-top w3-card-4">
-      <header class="w3-container w3-teal w3-center w3-padding-32"> 
-        <span onclick="document.getElementById('ticketModal').style.display='none'" 
-       class="w3-button w3-teal w3-xlarge w3-display-topright">×</span>
-        <h2 class="w3-wide"><i class="fa fa-suitcase w3-margin-right"></i>Tickets</h2>
-      </header>
-      <div class="w3-container">
-        <p><label><i class="fa fa-shopping-cart"></i> Tickets, $15 per person</label></p>
-        <input class="w3-input w3-border" type="text" placeholder="How many?">
-        <p><label><i class="fa fa-user"></i> Send To</label></p>
-        <input class="w3-input w3-border" type="text" placeholder="Enter email">
-        <button class="w3-button w3-block w3-teal w3-padding-16 w3-section w3-right">PAY <i class="fa fa-check"></i></button>
-        <button class="w3-button w3-red w3-section" onclick="document.getElementById('ticketModal').style.display='none'">Close <i class="fa fa-remove"></i></button>
-        <p class="w3-right">Need <a href="#" class="w3-text-blue">help?</a></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- The Contact Section -->
-  <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
-    <h2 class="w3-wide w3-center">CONTACT</h2>
-    <p class="w3-opacity w3-center"><i>Fan? Drop a note!</i></p>
-    <div class="w3-row w3-padding-32">
-      <div class="w3-col m6 w3-large w3-margin-bottom">
-        <i class="fa fa-map-marker" style="width:30px"></i> Chicago, US<br>
-        <i class="fa fa-phone" style="width:30px"></i> Phone: +00 151515<br>
-        <i class="fa fa-envelope" style="width:30px"> </i> Email: mail@mail.com<br>
-      </div>
-      <div class="w3-col m6">
-        <form action="/action_page.php" target="_blank">
-          <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
-            <div class="w3-half">
-              <input class="w3-input w3-border" type="text" placeholder="Name" required name="Name">
+                <div class="row">
+                    <div class="col-md-12 col-md-12 text-center icon-home">
+                        <a href="#home-below"><i class="ion-ios-arrow-down"></i></a>
+                    </div>
+                </div>
             </div>
-            <div class="w3-half">
-              <input class="w3-input w3-border" type="text" placeholder="Email" required name="Email">
-            </div>
-          </div>
-          <input class="w3-input w3-border" type="text" placeholder="Message" required name="Message">
-          <button class="w3-button w3-black w3-section w3-right" type="submit">SEND</button>
-        </form>
-      </div>
+        </div>
+
     </div>
-  </div>
-  
-<!-- End Page Content -->
-</div>
+    <!--HOME SECTION END  -->
+    <!-- HOME-BELOW SECTION START-->
+    <section id="home-below">
+        <div class="container">
 
-<!-- Image of location/map -->
-<img src="/w3images/map.jpg" class="w3-image w3-greyscale-min" style="width:100%">
+            <div class="row text-center">
 
-<!-- Footer -->
-<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
-  <i class="fa fa-facebook-official w3-hover-opacity"></i>
-  <i class="fa fa-instagram w3-hover-opacity"></i>
-  <i class="fa fa-snapchat w3-hover-opacity"></i>
-  <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-  <i class="fa fa-twitter w3-hover-opacity"></i>
-  <i class="fa fa-linkedin w3-hover-opacity"></i>
-  <p class="w3-medium">Powered by <a href="https://www.w3schools.com/w3css/default.asp" target="_blank">w3.css</a></p>
-</footer>
+                <div class="col-lg-4 col-md-4  col-sm-4 col-xs-12">
+                    <h2>Big Idea<br></h2>
+                    <p id="">*insert snippet of big idea text here, make a new page with more information, flow charts, etc*
+                        <br>
+                    </p>
+                    <a href="#" target="_blank" class="btn btn-custom btn-one">Show Me</a>
+                </div>
+                <div class="col-lg-4 col-md-4  col-sm-4 col-xs-12">
+                    <h2>Software Impact <br></h2>
+                    <p>*insert snippet of ethical stuff here, make a new page with a lot more in depth information - this feels important*
+                        <br>
+                    </p>
+                    <a href="#" target="_blank" class="btn btn-custom btn-one">Show Me</a>
+                </div>
+                <div class="col-lg-4 col-md-4  col-sm-4 col-xs-12">
+                    <h2>Project Evolution<br></h2>
+                    <p>*insert a snippet of what our project is now, use the show me tab to move to another page with pictures and video from the mvp*
+                        <br>
+                    </p>
+                    <a href="#" target="_blank" class="btn btn-custom btn-one">Show Me</a>
+                </div>
 
-<script>
-// Automatic Slideshow - change image every 4 seconds
-var myIndex = 0;
-carousel();
+            </div>
+        </div>
 
-function carousel() {
-  var i;
-  var x = document.getElementsByClassName("mySlides");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";  
-  }
-  myIndex++;
-  if (myIndex > x.length) {myIndex = 1}    
-  x[myIndex-1].style.display = "block";  
-  setTimeout(carousel, 4000);    
-}
+    </section>
+    <!-- HOME-BELOW SECTION END-->
+    <!--FEATURES SECTION START  -->
+    <section id="features">
+        <div class="container">
+            <div class="row text-center">
 
-// Used to toggle the menu on small screens when clicking on the menu button
-function myFunction() {
-  var x = document.getElementById("navDemo");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
-  }
-}
+                <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12  head-line">
+                    <h2 id="">Project Features </h2>
+                    <hr>
+                </div>
 
-// When the user clicks anywhere outside of the modal, close it
-var modal = document.getElementById('ticketModal');
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
-</script>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="feature-wrapper">
+                        <div class="media">
+                            <span class="pull-left">
+                                <i class="fa fa-windows icon-wrapper"></i>
 
+                            </span>
+                            <div class="media-body">
+                                <h4><strong>Collisions</strong></h4>
+                                Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="feature-wrapper">
+                        <div class="media">
+                            <span class="pull-left">
+                                <i class="fa fa-upload icon-wrapper"></i>
+
+                            </span>
+
+                            <div class="media-body">
+                                <h4><strong id="">Sprites</strong></h4>
+                                Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="feature-wrapper">
+                        <div class="media">
+                            <span class="pull-left">
+                                <i class="fa fa-phone icon-wrapper"></i>
+
+                            </span>
+                            <div class="media-body">
+                                <h4><strong>Jumping</strong></h4>
+                                Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="feature-wrapper">
+                        <div class="media">
+                            <span class="pull-left">
+                                <i class="fa fa-laptop icon-wrapper"></i>
+
+                            </span>
+                            <div class="media-body">
+                                <h4><strong>Gravity</strong></h4>
+                                Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="feature-wrapper">
+                        <div class="media">
+                            <span class="pull-left">
+                                <i class="fa fa-compass icon-wrapper"></i>
+
+                            </span>
+                            <div class="media-body">
+                                <h4><strong>Platformer</strong></h4>
+                                Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="feature-wrapper">
+                        <div class="media">
+                            <span class="pull-left">
+                                <i class="fa fa-bomb icon-wrapper"></i>
+
+                            </span>
+                            <div class="media-body">
+                                <h4><strong>PyGame</strong></h4>
+                                Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="feature-wrapper">
+                        <div class="media">
+                            <span class="pull-left">
+                                <i class="fa fa-crosshairs icon-wrapper"></i>
+
+                            </span>
+                            <div class="media-body">
+                                <h4><strong>Randomizing</strong></h4>
+                                Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="feature-wrapper">
+                        <div class="media">
+                            <span class="pull-left">
+                                <i class="fa fa-bell icon-wrapper"></i>
+
+                            </span>
+                            <div class="media-body">
+                                <h4><strong>Keyboard Input</strong></h4>
+                                Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <div class="feature-wrapper">
+                        <div class="media">
+                            <span class="pull-left">
+                                <i class="fa fa-power-off icon-wrapper"></i>
+
+                            </span>
+                            <div class="media-body">
+                                <h4><strong>Timer</strong></h4>
+                                Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!--FEATURES SECTION END  -->
+    <!-- CLIENTS SECTION START-->
+    <section id="clients">
+        <div class="overlay">
+            <div class="container">
+                <div class="row text-center">
+
+                    <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2 col-xs-12  client-cover">
+                        <div id="carousel-clients" class="carousel slide" data-ride="carousel">
+
+                            <div class="carousel-inner text-center">
+                                <div class="item active">
+                                    <img src="templates/product-launch/images/c1.jpg" class="img-circle clients-img" alt="">
+                                    <h4>"...best accomplishment to this day: successfully dying in the corona game..."<br></h4>
+                                    <h3>- Kate Mackowiak </h3>
+
+                                </div>
+                                <div class="item">
+
+                                    <img src="templates/product-launch/images/c2.jpg" class="img-circle clients-img" alt="">
+                                    <h4>Pellentesque posuere malesuada venenatis. 
+                                Donec laoreet dapibus nulla,
+                             Pellentesque posuere malesuada venenatis.
+                                    </h4>
+                                    <h3>-  Romaust Sonaloia </h3>
+                                </div>
+                                <div class="item">
+                                    <img src="templates/product-launch/images/c3.jpg" class="img-circle clients-img" alt="">
+                                    <h4>Pellentesque posuere malesuada venenatis. 
+                                Donec laoreet dapibus nulla,
+                             Pellentesque posuere malesuada venenatis.
+                                    </h4>
+                                    <h3>-  Tim Liyaeo Pard </h3>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    <!-- CLIENTS SECTION END-->
+    <!-- DOWNLOAD SECTION START-->
+    <section id="download">
+        <div class="container">
+            <div class="row text-center">
+
+                <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12  head-line">
+                    <h2>How to Play<br></h2>
+                    <hr>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-lg-5 col-md-5 col-sm-5">
+                    <h2>Fully Stable Release</h2>
+                    <p>
+                        Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae. Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae. Consectetur adipiscing elit felis dolor felis dolor
+                        vitae.Eelit felis dolor vitae felis dolor vitae.
+                    </p>
+                    <p>
+                        Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae. Consectetur adipiscing elit felis dolor felis dolor vitae.Eelit felis dolor vitae felis dolor vitae. Consectetur adipiscing elit felis dolor felis dolor
+                        vitae.Eelit felis dolor vitae felis dolor vitae.
+                    </p>
+                    <a href="#download" class="btn btn-launch">Download &nbsp;<i class="ion-ios-cloud-download-outline"></i></a>
+
+                </div>
+                <div class="col-lg-5 col-lg-offset-1 col-md-5 col-md-offset-1 col-sm-5 col-sm-offset-1">
+                    <img src="templates/product-launch/images/side.png" class="img-responsive" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- DOWNLOAD SECTION END-->
+    <!-- BOTTOM SECTION START-->
+    <section id="bottom">
+        <div class="container">
+            <div class="row text-center">
+
+                <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-12  head-line">
+                    <h2>Yes, You Can Contact US </h2>
+                    <hr>
+                </div>
+
+            </div>
+            <div class="row text-center">
+
+                <div class="col-md-12">
+                    <h3>info@thisdomain.com</h3>
+                </div>
+            </div>
+            <div class="row text-center">
+
+                <div class="col-md-12 ">
+                    <div class="social">
+                        <a href="#"><i class="fa fa-facebook "></i></a>
+                        <a href="#"><i class="fa fa-twitter"></i></a>
+                        <a href="#"><i class="fa fa-google-plus "></i></a>
+
+                        <a href="#"><i class="fa fa-linkedin "></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- BOTTOM SECTION END-->
+    <!-- FOOTER SECTION START-->
+    <footer>
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    © 2015 YourDomain.com | by<a href="http://www.designbootstrap.com/" target="_blank"> DesignBootstrap </a> 
+                </div>
+
+            </div>
+        </div>
+    </footer>
+    <!-- FOOTER SECTION END-->
 </body>
+
 </html>
