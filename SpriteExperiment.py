@@ -11,6 +11,7 @@ WIDTH_GW = 360  # width of our game window
 HEIGHT_GW = 480 # height of our game window
 FPS = 30 # frames per second
 BLACK = (0,0,0)
+WHITE = (255, 255,255)
 
 # initialize pygame and create window
 pygame.init()
@@ -173,6 +174,17 @@ if MaskCollision:
 VentilatorCollision = pygame.sprite.spritecollide(player, Ventilator, False)
 if VentilatorCollision:
 	health_improvement(self, health, delta= 20) #this function is in objects.py
+	
+#display text on screen. This is a very general function which can be used to visualize scores and any other visuals
+#code heavily taken from http://kidscancode.org/blog/2016/08/pygame_shmup_part_7/ 
+font_name = pygame.font.match_font('Comic Sans MS')
+
+def draw_text_on_screen(surf, text, size, xpos, ypos):
+    font = pygame.font.Font(font_name, size)
+    text_surface = font.render(text, True, WHITE)
+    text_rect = text_surface.get_rect()
+    text_rect.midtop = (xpos, ypos)
+    surf.blit(text_surface, text_rect)
 
 # Game Loop
 running = True
