@@ -4,26 +4,12 @@
 #https://kidscancode.org/blog/2016/08/pygame_1-3_more-about-sprites/
 #isinstance(sprite, BaseItem) Steve mentioned that this could be useful...
 from objects import *
+from constant_values import *
 import random
 import pygame
 import datetime
 import os
 
-#constant values
-k_default_move_value = 1
-k_intial_jump_velocity = .5
-k_gravity = -9.8
-k_max_health = 100
-k_max_zest = 100
-k_floor_offset = 200
-k_wall_offset = 50
-WIDTH_GW = 1024  # width of our game window
-HEIGHT_GW = 600 # height of our game window
-FPS = 30 # frames per second - try and do dynamically?
-BLACK = (0,0,0)
-PLAYER_ACC = 3
-PLAYER_GRAV = 0
-PLAYER_FRICTION = -.5
 
 class Model:
     """
@@ -49,6 +35,7 @@ class Model:
         self.clock = pygame.time.Clock()
         self.all_sprites = pygame.sprite.Group()
         self.object_sprites = pygame.sprite.Group()
+        self.platform_sprites = pygame.sprite.Group()
 
         # set up asset folders
         game_folder = os.path.dirname(__file__)
@@ -58,6 +45,7 @@ class Model:
         sick_img = pygame.image.load(os.path.join(img_folder, 'sick.png')).convert()
         egg_img = pygame.image.load(os.path.join(img_folder, 'egg.png')).convert()
         mask_img = pygame.image.load(os.path.join(img_folder, 'mask.jpg')).convert()
+        ground_img = pygame.image.load(os.path.join(img_folder, 'ground.png')).convert()
         '''guitar = pygame.image.load(os.path.join(img_folder, 'guitar.png')).convert()
         paint = pygame.image.load(os.path.join(img_folder, 'paint.png')).convert()
         social = pygame.image.load(os.path.join(img_folder, 'social.png')).convert()
@@ -70,8 +58,10 @@ class Model:
         self.unavailable_objects = []
         self.object_locations = []
         self.player_character = PlayerCharacter(player_img)
+        self.all_sprites.add(self.player_character)
         self.events = pygame.event.get()
 
+        #Create all objects and platforms, and add them to appropriate groups
         for tp in range(num_tp):
             self.object_list.append(Object(self.player_character.get_toilet_paper, 1, tp_img))
         for sick_people in range(num_sick_people):
@@ -83,9 +73,11 @@ class Model:
         for object in self.object_list:
             self.all_sprites.add(object)
             self.object_sprites.add(object)
-        self.all_sprites.add(self.player_character)
         self.available_objects = self.object_list.copy()
 
+        self.ground = Platform(ground_img)
+        self.all_sprites.add(self.ground)
+        self.platform_sprites.add(self.ground)
 
     def run(self):
         """
@@ -107,7 +99,7 @@ class Model:
                 self.unavailable_objects.append(object_to_move)
             #move each object that is on screen
             for object in self.unavailable_objects:
-                object.x -= k_default_move_value
+                object.x -= k_object_move_value
                 #if the object has reached the edge of the screen, remove it
                 if object.x <=0:
                     #potentially need to add a thing to hide the object
@@ -115,13 +107,21 @@ class Model:
                     self.available_objects.append(object)
                     object.restart()
 
-            object_collissions = pygame.sprite.spritecollide(self.player_character, self.object_sprites, False)
-            for object in object_collissions:
+            #check for collisions with objects and act upon that
+            object_collisions = pygame.sprite.spritecollide(self.player_character, self.object_sprites, False)
+            for object in object_collisions:
                 if object in self.unavailable_objects:
                     self.unavailable_objects.remove(object)
                     self.available_objects.append(object)
                 object.contact_player()
                 object.restart()
+
+            #check if we are standing on ground or jumping
+            platform_collisions = pygame.sprite.spritecollide(self.player_character, self.platform_sprites, False)
+            if len(platform_collisions) > 0:
+                self.player_character.on_ground = True
+            else:
+                self.player_character.on_ground = False
 
 
             #update pygame display

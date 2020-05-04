@@ -1,5 +1,5 @@
 """Creates the player character class and objects class"""
-from model import *
+from constant_values import *
 import pygame
 
 
@@ -31,21 +31,23 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.pos = pygame.math.Vector2(self.rect.center[0],self.rect.center[1])
         self.vel = pygame.math.Vector2(0,0)
         self.acc = pygame.math.Vector2(0,0)
+        self.on_ground = True
 
 
     def jump(self):
-        # jump only if standing on a platform
-        #self.rect.x += 1
-        #hits = pg.sprite.spritecollide(self, self.game.platforms, False)
-        #self.rect.x -= 1
-        #if hits:
-        self.vel.y = -20
+        #jump only if standing on a platform
+        if self.on_ground:
+            self.vel.y = -k_initial_jump_velocity
 
 
     def update(self):
         """updates the player position based on modified x and y coordinates
         """
         self.acc = pygame.math.Vector2(0, PLAYER_GRAV)
+        if self.on_ground:
+            self.acc.y = 0
+            if self.vel.y > 0:
+                self.vel.y = 0
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.acc.x = -PLAYER_ACC
@@ -134,7 +136,7 @@ class Platform(pygame.sprite.Sprite):
     """
     Platforms, including the ground, that the player character can walk on and jump off of
     """
-    def __init__(self, image, x=WIDTH_GW/2, y=HEIGHT_GW - k_floor_offset):
+    def __init__(self, image, x=WIDTH_GW/2, y=HEIGHT_GW-50):
         """
         Create an object.
         """
