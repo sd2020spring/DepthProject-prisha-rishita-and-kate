@@ -43,7 +43,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
     def update(self):
         """updates the player position based on modified x and y coordinates
         """
-        self.acc = pygame.math.Vector2(0, PLAYER_GRAV)
+        self.acc = pygame.math.Vector2(0, k_gravity)
         if self.on_ground:
             self.acc.y = 0
             if self.vel.y > 0:
@@ -67,7 +67,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         #print('tp', self.num_tp)
 
 
-    def corona_contracted(self, delta = 20):
+    def change_health(self, delta = 20):
         """
         Changes the health of the character
 
@@ -80,13 +80,9 @@ class PlayerCharacter(pygame.sprite.Sprite):
             ValueError: if delta isn't an integer #don't know how to raise errors
         """
 
-        if self.health + delta <= 0:
-            return False
-        if self.health <= k_max_health and self.health > 0:
-            self.health = self.health - delta
-        return True
-        draw_text_on_screen(screen, str(self.health), 20, WIDTH/4, 10) #display health on screen
 
+        if self.health + delta <= k_max_health:
+            self.health = self.health + delta
         # Raise ValueError if delta isn't integer
         pass
 
@@ -102,12 +98,8 @@ class PlayerCharacter(pygame.sprite.Sprite):
         Raises:
             ValueError: if delta isn't an integer         #don't know how to raise errors
         """
-        if self.zest >= k_max_zest:
-            return False
-        if self.zest > 0 and self.zest < k_max_zest:
+        if self.zest + delta <= k_max_zest:
             self.zest += delta
-        return True
-        draw_text_on_screen(screen, str(self.zest), 20, 3*WIDTH/4, 10) #display zest on screen
 
         # Raise ValueError if delta isn't integer
         pass
@@ -119,21 +111,21 @@ class PlayerCharacter(pygame.sprite.Sprite):
         """
         # Increase character's toilet paper by one
         self.num_tp += 1
-        draw_text_on_screen(screen, str(self.num_tp), 20, WIDTH/2, 10) #display num of tp on screen
         pass
 
-    def health_improvement(self, delta):
-        """
-        If player collects an object which improves their health (mask or ventilator), their health % increases.
-        If health + delta would increase health above 100%, health does not improve at all.
+    def restart(self):
+        """resets the player after dying"""
+        self.health = 100
+        self.zest = 100
+        self.num_tp = 0
+        self.jumping = False
+        self.jump_start_time = 0
+        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_floor_offset)
+        self.pos = pygame.math.Vector2(self.rect.center[0],self.rect.center[1])
+        self.vel = pygame.math.Vector2(0,0)
+        self.acc = pygame.math.Vector2(0,0)
+        self.on_ground = True
 
-        health: player health
-        delta: % by which health increases
-        """
-        if self.health + delta <= 100:
-            self.health += delta
-        draw_text_on_screen(screen, str(self.health), 20, WIDTH/4, 10) #display health on screen
-        pass
 
 class Platform(pygame.sprite.Sprite):
     """
@@ -151,6 +143,11 @@ class Platform(pygame.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.center = (x,y)
+
+    def restart(self):
+        self.x = WIDTH_GW/2
+        self.y = HEIGHT_GW-50
+        self.rect.center = (self.x,self.y)
 
 
 class Object(pygame.sprite.Sprite):
