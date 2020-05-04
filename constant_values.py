@@ -1,7 +1,7 @@
 import pygame
 
 #constants
-k_object_move_value = 20
+k_object_move_value = 1
 k_initial_jump_velocity = 45
 k_gravity = 2.5
 k_max_health = 100

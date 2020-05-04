@@ -43,15 +43,16 @@ class Model:
         game_folder = os.path.dirname(__file__)
         img_folder = os.path.join(game_folder, 'img')
         player_img = pygame.image.load(os.path.join(img_folder, 'human.jpg')).convert()
-        tp_img = pygame.image.load(os.path.join(img_folder, 'tp.jpg')).convert()
+        tp_img = pygame.image.load(os.path.join(img_folder, 'tp.png')).convert()
         sick_img = pygame.image.load(os.path.join(img_folder, 'sick.png')).convert()
-        egg_img = pygame.image.load(os.path.join(img_folder, 'egg.png')).convert()
-        mask_img = pygame.image.load(os.path.join(img_folder, 'mask.jpg')).convert()
+        egg_img = pygame.image.load(os.path.join(img_folder, 'eggnflour.png')).convert()
+        mask_img = pygame.image.load(os.path.join(img_folder, 'mask.png')).convert()
         ground_img = pygame.image.load(os.path.join(img_folder, 'ground.png')).convert()
-        '''guitar = pygame.image.load(os.path.join(img_folder, 'guitar.png')).convert()
+        guitar = pygame.image.load(os.path.join(img_folder, 'guitar.png')).convert()
         paint = pygame.image.load(os.path.join(img_folder, 'paint.png')).convert()
-        social = pygame.image.load(os.path.join(img_folder, 'social.png')).convert()
+        '''social = pygame.image.load(os.path.join(img_folder, 'social.png')).convert()
         ventilator_img = pygame.image.load(os.path.join(img_folder, 'ventilator.png')).convert()'''
+        self.background_img = pygame.image.load(os.path.join(img_folder, 'background.jpg')).convert()
 
         self.platform_list = []
         self.platform_locations = []
@@ -85,9 +86,7 @@ class Model:
         self.platform_sprites.add(self.ground)
 
     def home_screen(self):
-        game_folder = os.path.dirname(__file__)
-        img_folder = os.path.join(game_folder, 'img')
-        self.game_screen.blit(pygame.image.load(os.path.join(img_folder, 'background.jpg')).convert(),(0,0))
+        self.game_screen.blit(self.background_img,(0,0))
         self.draw_text_on_screen("Can You Beat Corona?", 64, WIDTH_GW / 2, HEIGHT_GW / 4, BLACK)
         self.draw_text_on_screen("Press a key to begin", 18, WIDTH_GW / 2, HEIGHT_GW * 3/8, BLACK)
         self.draw_text_on_screen("Arrow keys move player. Collect as many toilet paper rolls as you can before dying of corona or boredom.", 22, WIDTH_GW / 2, HEIGHT_GW / 2, BLACK)
@@ -96,9 +95,7 @@ class Model:
         pygame.display.flip()
 
     def end_screen(self):
-        game_folder = os.path.dirname(__file__)
-        img_folder = os.path.join(game_folder, 'img')
-        self.game_screen.blit(pygame.image.load(os.path.join(img_folder, 'background.jpg')).convert(),(0,0))
+        self.game_screen.blit(self.background_img,(0,0))
         if self.player_character.health <= 0:
             self.draw_text_on_screen("You died of the virus", 64, WIDTH_GW / 2, HEIGHT_GW / 4, BLACK)
         else:
@@ -170,7 +167,7 @@ class Model:
             self.clock.tick(FPS)
             # Draw / render
             self.all_sprites.update()
-            self.game_screen.fill(BLACK)
+            self.game_screen.blit(self.background_img,(0,0))
             self.all_sprites.draw(self.game_screen)
             self.draw_text_on_screen('Zest 4 Life ' + str(self.player_character.zest), 20, 3*WIDTH_GW/4, 10) #display zest on screen
             self.draw_text_on_screen('Toilet Paper Score ' + str(self.player_character.num_tp), 20, WIDTH_GW/2, 10) #display num of tp on screen
