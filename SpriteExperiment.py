@@ -1,7 +1,6 @@
 #https://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
 #https://kidscancode.org/blog/2016/08/pygame_1-2_working-with-sprites/
 #https://kidscancode.org/blog/2016/08/pygame_1-3_more-about-sprites/
-#isinstance(sprite, BaseItem) Steve mentioned that this could be useful...
 
 import pygame
 import random
@@ -121,39 +120,6 @@ class DecreaseBoredom(pygame.sprite.Sprite): #common sprite for all objects whic
 		self.rect = self.image.get_rect()
 		self.rect.center =(WIDTH_GW / 2, HEIGHT_GW / 2) #randomly place object on screen
 
-
-# class Guitar(pygame.sprite.Sprite): #sprite for guitar
-#     	def __init__(self):
-#       		pygame.sprite.Sprite.__init__(self)
-#       		self.image = guitar_img
-# 	        self.image.set_colorkey(BLACK)
-#       		self.rect = self.image.get_rect()
-#       		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
-
-# class PaintBrush(pygame.sprite.Sprite): #sprite for paint brush
-# 	def __init__(self):
-#       		pygame.sprite.Sprite.__init__(self)
-#       		self.image = paint_img
-# 		self.image.set_colorkey(BLACK)
-#       		self.rect = self.image.get_rect()
-#      		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
-
-# class Egg(pygame.sprite.Sprite): #sprite for egg
-#     	def __init__(self):
-# 		pygame.sprite.Sprite.__init__(self)
-# 	      	self.image = egg_img
-# 		self.image.set_colorkey(BLACK)
-# 	     	self.rect = self.image.get_rect()
-# 	      	self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
-
-# class SocialMedia(pygame.sprite.Sprite): #sprite for social media
-#     	def __init__(self):
-# 		pygame.sprite.Sprite.__init__(self)
-#       		self.image = social_img
-# 	   	self.image.set_colorkey(BLACK)
-#      		self.rect = self.image.get_rect()
-#       		self.rect.center = (WIDTH_GW / 2, HEIGHT_GW / 2) #this needs to be randomized
-
 #collisions
 BoredomCollisison = pygame.sprite.spritecollide(player, DecreaseBoredom, False)
 if BoredomCollisison:
@@ -204,14 +170,3 @@ while 1==0:
 
     # after drawing everything, flip the display to make it visible to viewer
     pygame.display.flip()
-
-
-# objects should move front and back on screen?
-#check for collision between player and others
-	#if collides with toilet paper - points increase
-
-	#if collides with sick person - health decrease
-	#if collides with mask - health increase
-	#if collides with ventilator - health increase x2
-
-	#if collides with guitar, paint brushes, eggs, or social media - entertainment increase
