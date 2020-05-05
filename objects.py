@@ -33,29 +33,36 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.acc = pygame.math.Vector2(0,0)
         self.on_ground = True
 
-
-    def jump(self):
-        #jump only if standing on a platform
-        if self.on_ground:
-            self.vel.y = -k_initial_jump_velocity
-
+    def move(self,direction, value = PLAYER_ACC):
+        """ move player
+        direction: string - 'left', 'right', 'up' 'stop_horizontal'
+        """
+        if direction == 'left':
+            self.acc.x = -value
+        elif direction == 'right':
+            self.acc.x = value
+        elif direction == 'up':
+            self.acc.y = k_gravity
+            if self.on_ground:
+                self.vel.y = -k_initial_jump_velocity
+        elif direction == 'down':
+            if self.pos.y < HEIGHT_GW - k_ground_height - k_object_offset:
+                self.acc.y = k_gravity + k_drop_acceleration
+            else:
+                self.acc.y = 0
+                self.vel.y = 0
+        elif direction == 'stop_horizontal':
+            self.acc.x = 0
+        elif direction == 'stop_vertical':
+            self.acc.y = k_gravity
+            if self.on_ground:
+                self.acc.y = 0
+                if self.vel.y > 0:
+                    self.vel.y = 0
 
     def update(self):
         """updates the player position based on modified x and y coordinates
         """
-        self.acc = pygame.math.Vector2(0, k_gravity)
-        if self.on_ground:
-            self.acc.y = 0
-            if self.vel.y > 0:
-                self.vel.y = 0
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.acc.x = -PLAYER_ACC
-        if keys[pygame.K_RIGHT]:
-            self.acc.x = PLAYER_ACC
-        if keys[pygame.K_UP]:
-            self.jump()
-
         # apply friction
         self.acc.x += self.vel.x * PLAYER_FRICTION
         # equations of motion
@@ -63,8 +70,6 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.pos += self.vel + 0.5 * self.acc
 
         self.rect.center = self.pos
-        #print('health',self.health)
-        #print('tp', self.num_tp)
 
 
     def change_health(self, delta = 20):
@@ -104,7 +109,10 @@ class PlayerCharacter(pygame.sprite.Sprite):
         """
         # Increase character's toilet paper by one
         self.num_tp += 1
-        pass
+
+    def bounce_away_from_sickness(self,x_amount):
+        """moves back a direction when hit by a sick person"""
+        self.pos.x += x_amount
 
     def restart(self):
         """resets the player after dying"""
@@ -113,7 +121,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.num_tp = 0
         self.jumping = False
         self.jump_start_time = 0
-        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_ground_height)
+        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_ground_height-k_object_offset)
         self.pos = pygame.math.Vector2(self.rect.center[0],self.rect.center[1])
         self.vel = pygame.math.Vector2(0,0)
         self.acc = pygame.math.Vector2(0,0)
@@ -155,8 +163,8 @@ class Object(pygame.sprite.Sprite):
     The different objects that interact with the player.
 
     Attributes:
-        delta_function: the function to call when a collision occurs, ex. player.get_toilet_paper,
-        delta_value: the amount that the delta_function will change a value by
+        delta_function: a list of the functions to call when a collision occurs, ex. player.get_toilet_paper,
+        delta_value: a list of the amounts that each delta_function will change a value by
         image: the image that shows up when you display the object
         x: the x-location of the object
         y: the y-location of the object
@@ -195,7 +203,11 @@ class Object(pygame.sprite.Sprite):
 
         Returns: None
         """
-        self.delta_function(self.delta_value)
+        n = 0
+        for function in self.delta_function:
+            function(self.delta_value[n])
+            n += 1
+
 
     def restart(self):
         """move object back to starting location after contact or reaching end of screen
