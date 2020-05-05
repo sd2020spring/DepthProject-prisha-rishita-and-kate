@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -17,11 +16,11 @@
 
 <body>
 	<nav class="navbar navbar-light bg-light navbar-expand-lg fixed-top">
-		<div class="container"> <a class="navbar-brand" href="index.html">corona-rona</a>
+		<div class="container"> <a class="navbar-brand" href="index.html">rona-rona</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item active"> <a class="nav-link" href="DepthProject-prisha-rishita-and-kate/pages/aboutus.html">about us<a href="#" class="badge badge-secondary">New</a>
+					<li class="nav-item active"> <a class="nav-link" href="DepthProject-prisha-rishita-and-kate/pages/aboutus.html">about us</a>
 						</a> </li>
 					<li class="nav-item"> <a class="nav-link" href="DepthProject-prisha-rishita-and-kate/pages/softwareimpactstatement.html">software impact statement</a> </li>
 					<li class="nav-item"> <a class="nav-link" href="evolution.html">project evolution</a> </li>
@@ -33,10 +32,10 @@
 		<div class="container">
 			<div class="row">
 				<div id="header-text" class="order-2 order-sm-2 order-md-1 col-12 col-sm-12 col-md-7 col-lg-6">
-					<h1 class="display-4">corona-rona</h1>
+					<h1 class="display-4">rona-rona</h1>
 					<p class="lead">
 						DISCLAIMER: this game could be potentially upsetting/cause emotional distress to some players. playing is not recommended if you have personal ties to the coronavirus</p>
-					<button type="button" class="btn btn-primary">learn more<a href="DepthProject-prisha-rishita-and-kate/pages/softwareimpactstatement.html"</a>
+					<button type="button" class="btn btn-primary">learn more<a class="nav-link" href="DepthProject-prisha-rishita-and-kate/pages/softwareimpactstatement.html"</a>
 					</button>
 				</div>
 				<div id="header-img" class="order-1 order-sm-1 order-md-2 col-12 col-sm-12 col-md-5 col-lg-6">
@@ -89,7 +88,7 @@
 						such as guitars, paint brushes, eggs, and social media logos. if during the game, the player comes in contact with a sick person, their health decreases. in order to gain health, the player must collect ventilators and/or
 						masks. the game ends if the "zest for life" bar and/or the health bar reaches 0.</p>
 					<p></p>
-					<button type="button" class="btn btn-primary">learn more<a href="DepthProject-prisha-rishita-and-kate/pages/aboutus.html"</a>
+					<button type="button" class="btn btn-primary">learn more<a class="nav-link" href="DepthProject-prisha-rishita-and-kate/pages/aboutus.html"</a>
 					</button>
 				</div>
 				<div class="col-12 col-lg-6 order-lg-1"> <img class="img-fluid" src="assets/images/2.jpg"> </div>
@@ -99,7 +98,7 @@
 					<h2>project evolution</h2>
 					<p>we tried to make two versions of this game - the first being an mvp where all the player would have to do was using the left and right arrow keys, trying to catch objects all on one level.</p>
 					<p>the ideal final version of this game is a platformer, where the player has to use the up arrow key in addition to the left and right ones, and has to catch and avoid different objects and obstacles at different heights.</p>
-					<button type="button" class="btn btn-primary">learn more<a href="evolution.html"</a>
+					<button type="button" class="btn btn-primary">learn more<a class="nav-link" href="DepthProject-prisha-rishita-and-kate/pages/evolution.html"</a>
 					</button>
 				</div>
 				<div class="col-12 col-lg-6 order-lg-2"> <img class="img-fluid" src="assets/images/3.jpg"> </div>
@@ -137,9 +136,6 @@
 			</div>
 		</div>
 	</section>
-	<footer id="page-footer" class="bg-dark">
-		<div class="container"> <span class="text-muted">Copyright Your Name</span> </div>
-	</footer>
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
