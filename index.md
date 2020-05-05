@@ -34,8 +34,8 @@
 					<h1 class="display-4">rona-rona</h1>
 					<p class="lead">
 						DISCLAIMER: this game could be potentially upsetting/cause emotional distress to some players. playing is not recommended if you have personal ties to the coronavirus</p>
-					<button type="button" class="btn btn-primary">learn more<a class="nav-link" href="DepthProject-prisha-rishita-and-kate/pages/softwareimpactstatement.html"</a>
-					</button>
+					<a class="nav-link" href="https://github.com/sd2020spring/DepthProject-prisha-rishita-and-kate/blob/master/pages/softwareimpactstatement.html"><button type="button" class="btn btn-primary">learn more
+					</button></a>
 				</div>
 				<div id="header-img" class="order-1 order-sm-1 order-md-2 col-12 col-sm-12 col-md-5 col-lg-6">
 					<img class="img-fluid" src="assets/images/1.jpg"> </div>
@@ -87,7 +87,7 @@
 						such as guitars, paint brushes, eggs, and social media logos. if during the game, the player comes in contact with a sick person, their health decreases. in order to gain health, the player must collect ventilators and/or
 						masks. the game ends if the "zest for life" bar and/or the health bar reaches 0.</p>
 					<p></p>
-					<button type="button" class="btn btn-primary">learn more<a class="nav-link" href="DepthProject-prisha-rishita-and-kate/pages/aboutus.html"</a>
+					<button type="button" class="btn btn-primary"><a class="nav-link" href="https://github.com/sd2020spring/DepthProject-prisha-rishita-and-kate/blob/master/pages/aboutus.html">learn more</a>
 					</button>
 				</div>
 				<div class="col-12 col-lg-6 order-lg-1"> <img class="img-fluid" src="assets/images/2.jpg"> </div>
@@ -97,7 +97,7 @@
 					<h2>project evolution</h2>
 					<p>we tried to make two versions of this game - the first being an mvp where all the player would have to do was using the left and right arrow keys, trying to catch objects all on one level.</p>
 					<p>the ideal final version of this game is a platformer, where the player has to use the up arrow key in addition to the left and right ones, and has to catch and avoid different objects and obstacles at different heights.</p>
-					<button type="button" class="btn btn-primary">learn more<a class="nav-link" href="DepthProject-prisha-rishita-and-kate/pages/evolution.html"</a>
+					<button type="button" class="btn btn-primary"><a class="nav-link" href="https://github.com/sd2020spring/DepthProject-prisha-rishita-and-kate/blob/master/pages/evolution.html ">learn more</a>
 					</button>
 				</div>
 				<div class="col-12 col-lg-6 order-lg-2"> <img class="img-fluid" src="assets/images/3.jpg"> </div>
