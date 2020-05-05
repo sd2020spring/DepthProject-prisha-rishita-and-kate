@@ -157,6 +157,19 @@ class Model:
                     self.onscreen_obejcts.append(object)
                 #call the contact function regardless of what has hit the player
                 object.contact_player()
+        #get all the platform collisions
+        platform_collisions = pygame.sprite.spritecollide(player, self.platform_sprites, False)
+        #if player is touching a platform and are moving downwards, evaluate if if should stop or not
+        if len(platform_collisions) > 0 and player.vel.y >= 0:
+            player.on_ground = False
+            #check each platform
+            for platform in platform_collisions:
+                #if the player is above the platform when hitting it, it is on the ground
+                if platform.y >= player.pos.y + k_object_offset/2:
+                    player.on_ground = True
+        #if not touching any platforms or moving upwards, player is not on the ground
+        else:
+            self.player_character.on_ground = False
 
     def check_for_death(self,player):
         """checks the input players stats to see if they have died"""
@@ -176,9 +189,38 @@ class Model:
             if player.pos.x >= 0 and player.pos.x <= WIDTH_GW:
                 self.out_of_box_time = 0
                 self.is_out_of_box = False
-        #however if you take too long getting back in bounds, you die 
+        #however if you take too long getting back in bounds, you die
         elif (time.time() - self.out_of_box_time > k_out_of_box_time) and self.is_out_of_box:
             self.game_over = True
+
+    def get_keyboard_input(self, player, left, right, up, down):
+        """ gets keyboard input from the input keys left, right, up and down
+        these could be either arrows or wasd.
+        moves the player character based on those arrow inputs"""
+        #left/right
+        keys = pygame.key.get_pressed()
+        if keys[left]:
+            self.player_character.move('left')
+            stop = False
+        elif keys[right]:
+            self.player_character.move('right')
+            stop = False
+        else:
+            #if we aren't pressing keys, tell player to not move horizontally
+            self.player_character.move('stop_horizontal')
+        #up/down
+        if keys[up]:
+            self.player_character.move('up')
+        elif keys[down]:
+            self.player_character.move('down')
+        else:
+            self.player_character.move('stop_vertical')
+
+    def update_player_boredon(self,player):
+        """decrease the players boredom a certain amount per some unit of time"""
+        if (time.time()-self.start_boredom_time) > k_time_between_boredom_drop:
+            self.start_boredom_time = time.time()
+            player.change_zest(k_boredom_drop_value)
 
     def run(self):
         """
@@ -253,44 +295,21 @@ class Model:
             #check for collisions with objects and act upon that
             self.collisions(self.player_character)
 
-            current_boredom = time.time()
-            if (current_boredom-self.start_boredom_time) > k_time_between_boredom_drop:
-                self.start_boredom_time = time.time()
-                self.player_character.change_zest(k_boredom_drop_value)
+            #change player motion based on keyboard
+            self.get_keyboard_input(self.player_character, pygame.K_LEFT,pygame.K_RIGHT,pygame.K_UP,pygame.K_DOWN)
 
-            #Player motion
-            #left/right
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_LEFT]:
-                self.player_character.move('left')
-                stop = False
-            elif keys[pygame.K_RIGHT]:
-                self.player_character.move('right')
-                stop = False
-            else:
-                self.player_character.move('stop_horizontal')
-            #jumping
-            platform_collisions = pygame.sprite.spritecollide(self.player_character, self.platform_sprites, False)
-            if len(platform_collisions) > 0 and self.player_character.vel.y >= 0:
-                self.player_character.on_ground = False
-                for platform in platform_collisions:
-                    if platform.y >= self.player_character.pos.y + k_object_offset/2:
-                        self.player_character.on_ground = True
-            else:
-                self.player_character.on_ground = False
-            if keys[pygame.K_UP]:
-                self.player_character.move('up')
-            elif keys[pygame.K_DOWN]:
-                self.player_character.move('down')
-            else:
-                self.player_character.move('stop_vertical')
+            #change player boredom as time passes
+            self.update_player_boredon(self.player_character)
 
             # keep loop running at the right speed
             self.clock.tick(FPS)
             # Draw / render
+            #update each sprite position
             self.all_sprites.update()
+            #set the background and draw each sprite
             self.game_screen.blit(self.background_img,(0,0))
             self.all_sprites.draw(self.game_screen)
+            #display score 
             self.draw_text_on_screen('Zest 4 Life ' + str(self.player_character.zest), 20, 3*WIDTH_GW/4, 10) #display zest on screen
             self.draw_text_on_screen('Toilet Paper Score ' + str(self.player_character.num_tp), 20, WIDTH_GW/2, 10) #display num of tp on screen
             self.draw_text_on_screen('Health ' + str(self.player_character.health), 20, WIDTH_GW/4, 10) #display health on screen
@@ -319,9 +338,8 @@ if __name__ == '__main__':
     while game_loop:
         while model.game_over == False:
             model.run()
-            if model.game_over == True:#this was just added. we need to make this equal false when player dies of corona or boredom. havent done that yet.
+            if model.game_over == True:
                 end_screen = True
-
             for event in model.events:
                 if event.type == pygame.QUIT:
                     game_loop= False
