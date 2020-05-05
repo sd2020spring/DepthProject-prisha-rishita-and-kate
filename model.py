@@ -15,12 +15,13 @@ import os
 class Model:
     """
     Updates the game:
-        -moves objects and platforms around screen
+        -moves game_items and platforms around screen
         -gets keyboard input and evaluates how to move the player character
         -evaluates collisions and calls appropriate functions accordingly
         -checks if the player has died and ends loop based on that
     """
-    def __init__(self, num_tp = 5, num_sick_people = 8, num_masks = 4, num_eggs = 3, num_guitars = 3, num_paint = 3, num_vent = 1, num_platforms = 4):
+    def __init__(self, num_tp = 5, num_sick_people = 8, num_masks = 4, num_eggs = 3,
+                num_guitars = 3, num_paint = 3, num_vent = 1, num_platforms = 4):
         '''
         start pygame window,
 
@@ -48,23 +49,23 @@ class Model:
         self.background_img = pygame.image.load(os.path.join(img_folder, 'background.jpg')).convert()
 
         #list of platforms that are/aren't currently on screen
-        self.onscreen_platforms = []
         self.offscreen_platforms = []
-        #lists of all objects (eggs, tp, sick people) that are/aren't currently on screen
-        self.onscreen_obejcts = []
+        self.onscreen_platforms = []
+        #lists of all game_items (eggs, tp, sick people) that are/aren't currently on screen
         self.offscreen_obejcts = []
+        self.onscreen_obejcts = []
 
-        #set up  time for when objects should move across the screen
+        #set up  time for when game_items should move across the screen
         self.start_boredom_time = time.time()
-        self.start_object_time = time.time() + k_time_between_objects
-        self.start_platform_time = time.time() + k_time_between_platforms
+        self.start_game_item_time = time.time() - k_time_between_game_items
+        self.start_platform_time = time.time() - k_time_between_platforms
         #also set up things ending the game if the player has gone off screen
         self.out_of_box_time = 0
         self.is_out_of_box = False
 
         #create groups of sprites
         self.all_sprites = pygame.sprite.Group()
-        self.object_sprites = pygame.sprite.Group()
+        self.game_item_sprites = pygame.sprite.Group()
         self.platform_sprites = pygame.sprite.Group()
         self.sick_sprites = pygame.sprite.Group()
         self.events = pygame.event.get()
@@ -73,31 +74,32 @@ class Model:
         self.player_character = PlayerCharacter(player_img)
         self.all_sprites.add(self.player_character)
 
-        #Create all objects and add them to appropriate groups
+        #Create all game_items and add them to appropriate groups
         for tp in range(num_tp):
-            self.onscreen_obejcts.append(Object([self.player_character.get_toilet_paper], [1], tp_img))
+            self.offscreen_obejcts.append(Game_Item([self.player_character.get_toilet_paper], [1], tp_img))
         for sick_people in range(num_sick_people):
-            self.onscreen_obejcts.append(Object([self.player_character.change_health, self.player_character.bounce_away_from_sickness], [-15,k_bounce_dist], sick_img))
-            self.sick_sprites.add(self.onscreen_obejcts[-1])
+            self.offscreen_obejcts.append(Game_Item([self.player_character.change_health,
+                self.player_character.bounce_away_from_sickness], [-15,k_bounce_dist], sick_img))
+            self.sick_sprites.add(self.offscreen_obejcts[-1])
         for mask in range(num_masks):
-            self.onscreen_obejcts.append(Object([self.player_character.change_health], [5], mask_img))
+            self.offscreen_obejcts.append(Game_Item([self.player_character.change_health], [5], mask_img))
         for egg in range(num_eggs):
-            self.onscreen_obejcts.append(Object([self.player_character.change_zest], [5], egg_img))
+            self.offscreen_obejcts.append(Game_Item([self.player_character.change_zest], [5], egg_img))
         for paint in range(num_paint):
-            self.onscreen_obejcts.append(Object([self.player_character.change_zest], [5], paint_img))
+            self.offscreen_obejcts.append(Game_Item([self.player_character.change_zest], [5], paint_img))
         for guitar in range(num_guitars):
-            self.onscreen_obejcts.append(Object([self.player_character.change_zest], [5], guitar_img))
+            self.offscreen_obejcts.append(Game_Item([self.player_character.change_zest], [5], guitar_img))
         for ventilator in range(num_vent):
-            self.onscreen_obejcts.append(Object([self.player_character.change_health], [k_max_health], ventilator_img))
-        for object in self.onscreen_obejcts:
-            self.all_sprites.add(object)
-            self.object_sprites.add(object)
+            self.offscreen_obejcts.append(Game_Item([self.player_character.change_health], [k_max_health], ventilator_img))
+        for game_item in self.offscreen_obejcts:
+            self.all_sprites.add(game_item)
+            self.game_item_sprites.add(game_item)
 
         #create the platforms and ground of the game
         for platform in range(num_platforms):
-            self.onscreen_platforms.append(Platform(platform_img,x=WIDTH_GW+k_platform_offset))
-            self.platform_sprites.add(self.onscreen_platforms[-1])
-            self.all_sprites.add(self.onscreen_platforms[-1])
+            self.offscreen_platforms.append(Platform(platform_img,x=WIDTH_GW+k_platform_offset))
+            self.platform_sprites.add(self.offscreen_platforms[-1])
+            self.all_sprites.add(self.offscreen_platforms[-1])
         self.ground = Platform(ground_img)
         self.all_sprites.add(self.ground)
         self.platform_sprites.add(self.ground)
@@ -107,9 +109,13 @@ class Model:
         self.game_screen.blit(self.background_img,(0,0))
         self.draw_text_on_screen("Can You Beat Corona?", 64, WIDTH_GW / 2, HEIGHT_GW / 4, BLACK)
         self.draw_text_on_screen("Press a key to begin", 18, WIDTH_GW / 2, HEIGHT_GW * 3/8, BLACK)
-        self.draw_text_on_screen("Arrow keys move player. Collect as many toilet paper rolls as you can before dying of corona or boredom.", 22, WIDTH_GW / 2, HEIGHT_GW / 2, BLACK)
-        self.draw_text_on_screen("Health: Start at 100%, decreases if player collides with sick person, increases if player collects masks/ ventilators.", 18, WIDTH_GW / 2, HEIGHT_GW * 3/4, BLACK)
-        self.draw_text_on_screen("Zest for Life: Start at 100%, decreases over time, increases if player collects eggs/social media icons/paint brushes/guitars.", 18, WIDTH_GW / 2, HEIGHT_GW * 7/8, BLACK)
+        self.draw_text_on_screen("Arrow keys move player. Collect as many toilet paper rolls as you can"
+                                +"before dying of corona or boredom.", 22, WIDTH_GW / 2, HEIGHT_GW / 2, BLACK)
+        self.draw_text_on_screen("Health: Start at 100%, decreases if player collides with sick person,"
+                                +"increases if player collects masks/ ventilators.", 18, WIDTH_GW / 2, HEIGHT_GW * 3/4, BLACK)
+        self.draw_text_on_screen("Zest for Life: Start at 100%, decreases over time,"
+                                +"increases if player collects eggs/social media icons/paint brushes/guitars.", 18,
+                                WIDTH_GW / 2,HEIGHT_GW * 7/8, BLACK)
         pygame.display.flip()
 
     def end_screen(self):
@@ -133,30 +139,30 @@ class Model:
         self.game_screen.blit(text_surface, text_rect)
 
     def collisions(self, player):
-        """ determines which objects have collided with the given player object
+        """ determines which game_items have collided with the given player game_item
         if the player contacts a sick person, the sick person doesnt disappear
         all other sprites change a value of the player character and reset
         """
         #get all the current collisions
-        object_collisions = pygame.sprite.spritecollide(player, self.object_sprites, False)
-        for object in object_collisions:
+        game_item_collisions = pygame.sprite.spritecollide(player, self.game_item_sprites, False)
+        for game_item in game_item_collisions:
             #make sure we are actually colliding with something visible
-            if object in self.offscreen_obejcts:
+            if game_item in self.onscreen_obejcts:
                 #if we collide with a sick sprite, then make both characters bounce away
-                if object in self.sick_sprites:
-                    if object.x > player.pos.x:
-                        object.delta_value[1] = -k_bounce_dist
-                        object.x += k_bounce_dist
+                if game_item in self.sick_sprites:
+                    if game_item.x > player.pos.x:
+                        game_item.delta_value[1] = -k_bounce_dist
+                        game_item.x += k_bounce_dist
                     else:
-                        object.delta_value[1] = k_bounce_dist
-                        object.x -= k_bounce_dist
-                #if its any other sprite, reset the object, and move it to the offscreen list
+                        game_item.delta_value[1] = k_bounce_dist
+                        game_item.x -= k_bounce_dist
+                #if its any other sprite, reset the game_item, and move it to the onscreen list
                 else:
-                    object.restart()
-                    self.offscreen_obejcts.remove(object)
-                    self.onscreen_obejcts.append(object)
+                    game_item.restart()
+                    self.onscreen_obejcts.remove(game_item)
+                    self.offscreen_obejcts.append(game_item)
                 #call the contact function regardless of what has hit the player
-                object.contact_player()
+                game_item.contact_player()
         #get all the platform collisions
         platform_collisions = pygame.sprite.spritecollide(player, self.platform_sprites, False)
         #if player is touching a platform and are moving downwards, evaluate if if should stop or not
@@ -165,7 +171,7 @@ class Model:
             #check each platform
             for platform in platform_collisions:
                 #if the player is above the platform when hitting it, it is on the ground
-                if platform.y >= player.pos.y + k_object_offset/2:
+                if platform.y >= player.pos.y + k_game_item_offset/2:
                     player.on_ground = True
         #if not touching any platforms or moving upwards, player is not on the ground
         else:
@@ -226,7 +232,7 @@ class Model:
         """
         Get input from keyboard, evaluate what to do based on the input and current
         game state.
-        Handles collisions between the player and objects.
+        Handles collisions between the player and game_items.
         Checks if the player has died
         """
         #update any inputs, as well as check if the game has been closed
@@ -235,9 +241,9 @@ class Model:
         if self.game_over == False:
             #PLATFORM MOTION
             if time.time() > k_time_between_platforms + self.start_platform_time:
-                if (random.randint(0,20) == 0) and (len(self.onscreen_platforms) > 0):
+                if (random.randint(0,20) == 0) and (len(self.offscreen_platforms) > 0):
                     #select a platform
-                    platform_to_move = self.onscreen_platforms[random.randint(0,len(self.onscreen_platforms)-1)]
+                    platform_to_move = self.offscreen_platforms[random.randint(0,len(self.offscreen_platforms)-1)]
                     #put it at one of two heights, and make the lower one more common
                     if random.randint(1,5)> 2:
                         height_multiplier = 2
@@ -246,53 +252,53 @@ class Model:
                     #set the height of the platform based on the above number
                     platform_to_move.y = ((HEIGHT_GW-k_ground_height)/3)*height_multiplier + k_ground_height
                     #move it from the available list to the unavailable list and restart timer between sending platforms
-                    self.onscreen_platforms.remove(platform_to_move)
-                    self.offscreen_platforms.append(platform_to_move)
+                    self.offscreen_platforms.remove(platform_to_move)
+                    self.onscreen_platforms.append(platform_to_move)
                     self.start_platform_time = time.time()
-            #move each object that is on screen as the game scrolls
-            for platform in self.offscreen_platforms:
+            #move each game_item that is on screen as the game scrolls
+            for platform in self.onscreen_platforms:
                 #change the x value of the platform to move it
-                platform.x -= k_object_move_value
-                #if the object has reached the edge of the screen, remove it from the moving list
+                platform.x -= k_game_item_move_value
+                #if the game_item has reached the edge of the screen, remove it from the moving list
                 if platform.x <=0 - k_platform_offset:
-                    self.offscreen_platforms.remove(platform)
-                    self.onscreen_platforms.append(platform)
+                    self.onscreen_platforms.remove(platform)
+                    self.offscreen_platforms.append(platform)
                     #and reset the x and y values of the platfrom
                     platform.restart()
 
-            #EVERYTHING DEALING WITH OBJECTS:
-            #choose to add an object to screen
-            if time.time() > k_time_between_objects + self.start_object_time:
-                #if we have waited long enough decide if there should be an object
-                if (random.randint(0,30) == 0) and (len(self.onscreen_obejcts) > 0):
-                    #create an object and start it on the ground
-                    object_to_move = self.onscreen_obejcts[random.randint(0,len(self.onscreen_obejcts)-1)]
-                    object_to_move.y = HEIGHT_GW - k_ground_height - k_object_offset
+            #EVERYTHING DEALING WITH ITEMS:
+            #choose to add an game_item to screen
+            if time.time() > k_time_between_game_items + self.start_game_item_time:
+                #if we have waited long enough decide if there should be an game_item
+                if (random.randint(0,30) == 0) and (len(self.offscreen_obejcts) > 0):
+                    #create an game_item and start it on the ground
+                    game_item_to_move = self.offscreen_obejcts[random.randint(0,len(self.offscreen_obejcts)-1)]
+                    game_item_to_move.y = HEIGHT_GW - k_ground_height - k_game_item_offset
                     #and randomly choose if it should really be on a platform instead
                     if random.randint(0,10) > 0:
                         #find any platforms we could start on
                         potential_start_locations = []
-                        for platform in self.offscreen_platforms:
+                        for platform in self.onscreen_platforms:
                             if platform.x > WIDTH_GW - k_platform_offset/2:
                                 potential_start_locations.append(platform)
                         #if there are platforms, then choose one randomly
                         if len(potential_start_locations) > 1:
-                            object_to_move.y = platform.y - k_object_offset
-                        #otherwise give up and leave the object on the ground
-                    #move the object to the unavailable moving list
-                    self.onscreen_obejcts.remove(object_to_move)
-                    self.offscreen_obejcts.append(object_to_move)
-                    self.start_object_time = time.time()
-                #move each object that is on screen
-            for object in self.offscreen_obejcts:
-                object.x -= k_object_move_value
-                #if the object has reached the edge of the screen, remove it
-                if object.x <=0:
-                    self.offscreen_obejcts.remove(object)
-                    self.onscreen_obejcts.append(object)
-                    object.restart()
+                            game_item_to_move.y = platform.y - k_game_item_offset
+                        #otherwise give up and leave the game_item on the ground
+                    #move the game_item to the unavailable moving list
+                    self.offscreen_obejcts.remove(game_item_to_move)
+                    self.onscreen_obejcts.append(game_item_to_move)
+                    self.start_game_item_time = time.time()
+                #move each game_item that is on screen
+            for game_item in self.onscreen_obejcts:
+                game_item.x -= k_game_item_move_value
+                #if the game_item has reached the edge of the screen, remove it
+                if game_item.x <=0:
+                    self.onscreen_obejcts.remove(game_item)
+                    self.offscreen_obejcts.append(game_item)
+                    game_item.restart()
 
-            #check for collisions with objects and act upon that
+            #check for collisions with game_items and act upon that
             self.collisions(self.player_character)
 
             #change player motion based on keyboard
@@ -309,7 +315,7 @@ class Model:
             #set the background and draw each sprite
             self.game_screen.blit(self.background_img,(0,0))
             self.all_sprites.draw(self.game_screen)
-            #display score 
+            #display score
             self.draw_text_on_screen('Zest 4 Life ' + str(self.player_character.zest), 20, 3*WIDTH_GW/4, 10) #display zest on screen
             self.draw_text_on_screen('Toilet Paper Score ' + str(self.player_character.num_tp), 20, WIDTH_GW/2, 10) #display num of tp on screen
             self.draw_text_on_screen('Health ' + str(self.player_character.health), 20, WIDTH_GW/4, 10) #display health on screen

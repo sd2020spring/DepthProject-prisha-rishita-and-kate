@@ -1,4 +1,4 @@
-"""Creates the player character class and objects class"""
+"""Creates the player character class and game_items class"""
 from constant_values import *
 import pygame
 
@@ -27,7 +27,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.image = image
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_ground_height-k_object_offset)
+        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_ground_height-k_game_item_offset)
         self.pos = pygame.math.Vector2(self.rect.center[0],self.rect.center[1])
         self.vel = pygame.math.Vector2(0,0)
         self.acc = pygame.math.Vector2(0,0)
@@ -46,7 +46,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
             if self.on_ground:
                 self.vel.y = -k_initial_jump_velocity
         elif direction == 'down':
-            if self.pos.y < HEIGHT_GW - k_ground_height - k_object_offset:
+            if self.pos.y < HEIGHT_GW - k_ground_height - k_game_item_offset:
                 self.acc.y = k_gravity + k_drop_acceleration
             else:
                 self.acc.y = 0
@@ -121,7 +121,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.num_tp = 0
         self.jumping = False
         self.jump_start_time = 0
-        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_ground_height-k_object_offset)
+        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_ground_height-k_game_item_offset)
         self.pos = pygame.math.Vector2(self.rect.center[0],self.rect.center[1])
         self.vel = pygame.math.Vector2(0,0)
         self.acc = pygame.math.Vector2(0,0)
@@ -134,7 +134,7 @@ class Ground(pygame.sprite.Sprite):
     """
     def __init__(self, image, x=WIDTH_GW/2, y=HEIGHT_GW-k_ground_height):
         """
-        Create an object.
+        Create an game_item.
         """
         # Initialize variables
         self.x = x
@@ -158,18 +158,18 @@ class Platform(Ground):
         self.rect.center = (self.x,self.y)
 
 
-class Object(pygame.sprite.Sprite):
+class Game_Item(pygame.sprite.Sprite):
     """
-    The different objects that interact with the player.
+    The different game_items that interact with the player.
 
     Attributes:
         delta_function: a list of the functions to call when a collision occurs, ex. player.get_toilet_paper,
         delta_value: a list of the amounts that each delta_function will change a value by
-        image: the image that shows up when you display the object
-        x: the x-location of the object
-        y: the y-location of the object
+        image: the image that shows up when you display the game_item
+        x: the x-location of the game_item
+        y: the y-location of the game_item
 
-    Examples of different objects:
+    Examples of different game_items:
         toilet paper: increases toilet paper by 1
         masks: increase health by 5
         activities: decrease zest by 5
@@ -177,7 +177,7 @@ class Object(pygame.sprite.Sprite):
     """
     def __init__(self, delta_function, delta_value, image, x=WIDTH_GW + k_wall_offset, y=HEIGHT_GW - k_ground_height):
         """
-        Create an object.
+        Create an game_item.
         """
         # Initialize variables
         self.delta_function = delta_function
@@ -192,14 +192,14 @@ class Object(pygame.sprite.Sprite):
 
 
     def update(self):
-        """updates the object position based on modified x and y coordinates
+        """updates the game_item position based on modified x and y coordinates
         """
         self.rect.center = (self.x,self.y)
 
 
     def contact_player(self):
         """
-        Call the delta_function if the object collides with the player character
+        Call the delta_function if the game_item collides with the player character
 
         Returns: None
         """
@@ -210,7 +210,7 @@ class Object(pygame.sprite.Sprite):
 
 
     def restart(self):
-        """move object back to starting location after contact or reaching end of screen
+        """move game_item back to starting location after contact or reaching end of screen
         """
         self.x=WIDTH_GW + k_wall_offset
         self.y=HEIGHT_GW - k_ground_height
