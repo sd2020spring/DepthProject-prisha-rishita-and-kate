@@ -7,6 +7,7 @@ from objects import *
 from constant_values import *
 import random
 import pygame
+from pygame.locals import *
 import time
 import os
 
@@ -15,7 +16,7 @@ class Model:
     """
     Updates the game based on Controller input.
     """
-    def __init__(self, num_tp = 5, num_sick_people = 8, num_masks = 4, num_eggs = 3, num_guitars = 3, num_paint = 3, num_vent = 1):
+    def __init__(self, num_tp = 5, num_sick_people = 8, num_masks = 4, num_eggs = 3, num_guitars = 3, num_paint = 3, num_vent = 1, num_platforms = 4):
         '''
         platform_list: list of each platform object to be used for finding where they are
         platform_locations: dictionary of each platforms corners format {'left_bound', 'right_bound', 'top_bound', 'bottom_bound'}
@@ -50,12 +51,12 @@ class Model:
         ground_img = pygame.image.load(os.path.join(img_folder, 'ground.png')).convert()
         guitar_img = pygame.image.load(os.path.join(img_folder, 'guitar.png')).convert_alpha()
         paint_img = pygame.image.load(os.path.join(img_folder, 'paint.png')).convert_alpha()
-        #social = pygame.image.load(os.path.join(img_folder, 'social.png')).convert()
+        platform_img = pygame.image.load(os.path.join(img_folder, 'platform.png')).convert_alpha()
         ventilator_img = pygame.image.load(os.path.join(img_folder, 'ventilator.png')).convert_alpha()
         self.background_img = pygame.image.load(os.path.join(img_folder, 'background.jpg')).convert()
 
-        self.platform_list = []
-        self.platform_locations = []
+        self.available_platforms = []
+        self.unavailable_platforms = []
         self.object_list = []
         self.available_objects = []
         self.unavailable_objects = []
@@ -65,6 +66,9 @@ class Model:
         self.events = pygame.event.get()
         self.start_boredom_time = time.time()
         self.start_object_time = time.time()
+        self.start_platform_time = time.time()
+        self.out_of_box_time = 0
+        self.is_out_of_box = False
 
         #Create all objects and platforms, and add them to appropriate groups
         for tp in range(num_tp):
@@ -87,6 +91,11 @@ class Model:
             self.object_sprites.add(object)
         self.available_objects = self.object_list.copy()
 
+        for platform in range(num_platforms):
+            self.available_platforms.append(Platform(platform_img,x=WIDTH_GW+k_platform_offset))
+            self.platform_sprites.add(self.available_platforms[-1])
+            self.all_sprites.add(self.available_platforms[-1])
+
         self.ground = Platform(ground_img)
         self.all_sprites.add(self.ground)
         self.platform_sprites.add(self.ground)
@@ -104,8 +113,10 @@ class Model:
         self.game_screen.blit(self.background_img,(0,0))
         if self.player_character.health <= 0:
             self.draw_text_on_screen("You died of the virus", 64, WIDTH_GW / 2, HEIGHT_GW / 4, BLACK)
-        else:
+        elif self.player_character.zest <= 0:
             self.draw_text_on_screen("You died of boredom", 64, WIDTH_GW / 2, HEIGHT_GW / 4, BLACK)
+        else:
+            self.draw_text_on_screen("You died by falling off the face of the planet", 64, WIDTH_GW / 2, HEIGHT_GW / 4, BLACK)
         self.draw_text_on_screen("Your score was {}".format(self.player_character.num_tp), 18, WIDTH_GW / 2, HEIGHT_GW * 3/8, BLACK)
         pygame.display.flip()
 
@@ -126,15 +137,47 @@ class Model:
         #update any inputs, as well as check if the game has been closed
         self.events = pygame.event.get()
         #make sure we aren't dead before doing anything else
-        if self.player_character.health > 0 and self.player_character.zest > 0:
+        if self.game_over == False:
+            #PLATFORM MOTION
+            if time.time() > k_time_between_platforms + self.start_platform_time:
+                if (random.randint(0,20) == 0) and (len(self.available_platforms) > 0):
+                    #select a platform
+                    platform_to_move = self.available_platforms[random.randint(0,len(self.available_platforms)-1)]
+                    #put it at one of three heights
+                    platform_to_move.y = ((HEIGHT_GW-k_ground_height)/3)*(random.randint(1,2)) + k_ground_height
+                    #move it from the available list to the unavailable list and restart clock
+                    self.available_platforms.remove(platform_to_move)
+                    self.unavailable_platforms.append(platform_to_move)
+                    self.start_platform_time = time.time()
+                #move each object that is on screen
+            for platform in self.unavailable_platforms:
+                platform.x -= k_object_move_value
+                #if the object has reached the edge of the screen, remove it
+                if platform.x <=0 - k_platform_offset:
+                    self.unavailable_platforms.remove(platform)
+                    self.available_platforms.append(platform)
+                    platform.restart()
+
             #EVERYTHING DEALING WITH OBJECTS:
             #choose to add an object to screen
             if time.time() > k_time_between_objects + self.start_object_time:
+                #if we have waited long enough decide if there should be an object
                 if (random.randint(0,30) == 0) and (len(self.available_objects) > 0):
-                    #potentially need to add thing to show the object
+                    #create an object and start it on the ground
                     object_to_move = self.available_objects[random.randint(0,len(self.available_objects)-1)]
-                    if not(object_to_move in self.sick_sprites):
-                        object_to_move.y = random.randint(0,k_floor_offset)
+                    object_to_move.y = HEIGHT_GW - k_ground_height - k_object_offset
+                    #and randomly choose if it should really be on a platform instead
+                    if random.randint(0,10) > 0:
+                        #find any platforms we could start on
+                        potential_start_locations = []
+                        for platform in self.unavailable_platforms:
+                            if platform.x > WIDTH_GW - k_platform_offset/2:
+                                potential_start_locations.append(platform)
+                        #if there are platforms, then choose one randomly
+                        if len(potential_start_locations) > 1:
+                            object_to_move.y = platform.y - k_object_offset
+                        #otherwise give up and leave the object on the ground
+                    #move the object to the unavailable moving list
                     self.available_objects.remove(object_to_move)
                     self.unavailable_objects.append(object_to_move)
                     self.start_object_time = time.time()
@@ -143,7 +186,6 @@ class Model:
                 object.x -= k_object_move_value
                 #if the object has reached the edge of the screen, remove it
                 if object.x <=0:
-                    #potentially need to add a thing to hide the object
                     self.unavailable_objects.remove(object)
                     self.available_objects.append(object)
                     object.restart()
@@ -164,8 +206,11 @@ class Model:
 
             #check if we are standing on ground or jumping
             platform_collisions = pygame.sprite.spritecollide(self.player_character, self.platform_sprites, False)
-            if len(platform_collisions) > 0:
-                self.player_character.on_ground = True
+            if len(platform_collisions) > 0 and self.player_character.vel.y >= 0:
+                self.player_character.on_ground = False
+                for platform in platform_collisions:
+                    if platform.y > self.player_character.pos.y:
+                        self.player_character.on_ground = True
             else:
                 self.player_character.on_ground = False
 
@@ -180,9 +225,22 @@ class Model:
             self.draw_text_on_screen('Health ' + str(self.player_character.health), 20, WIDTH_GW/4, 10) #display health on screen
             # after drawing everything, flip the display to make it visible to viewer
             pygame.display.flip()
-        else:
-            self.game_over = True
 
+        #check if the game is over for any reason
+        if self.player_character.health <= 0 and self.player_character.zest <= 0:
+            self.game_over = True
+        if (self.player_character.pos.x < -k_out_of_bounds or self.player_character.pos.x > WIDTH_GW + k_out_of_bounds) and self.is_out_of_box == False:
+            self.out_of_box_time = time.time()
+            self.is_out_of_box = True
+        if (self.player_character.pos.y < -k_out_of_bounds or self.player_character.pos.y > HEIGHT_GW + k_out_of_bounds) and self.is_out_of_box == False:
+            self.out_of_box_time = time.time()
+            self.is_out_of_box = True
+        if self.player_character.pos.y >= 0 and self.player_character.pos.y <= HEIGHT_GW:
+            if self.player_character.pos.x >= 0 and self.player_character.pos.x <= WIDTH_GW:
+                self.out_of_box_time = 0
+                self.is_out_of_box = False
+        elif (time.time() - self.out_of_box_time > k_out_of_box_time) and self.is_out_of_box:
+            self.game_over = True
 
 if __name__ == '__main__':
     model = Model()

@@ -27,7 +27,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.image = image
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_floor_offset)
+        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_ground_height-k_object_offset)
         self.pos = pygame.math.Vector2(self.rect.center[0],self.rect.center[1])
         self.vel = pygame.math.Vector2(0,0)
         self.acc = pygame.math.Vector2(0,0)
@@ -113,24 +113,26 @@ class PlayerCharacter(pygame.sprite.Sprite):
         self.num_tp = 0
         self.jumping = False
         self.jump_start_time = 0
-        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_floor_offset)
+        self.rect.center = (WIDTH_GW/2, HEIGHT_GW-k_ground_height)
         self.pos = pygame.math.Vector2(self.rect.center[0],self.rect.center[1])
         self.vel = pygame.math.Vector2(0,0)
         self.acc = pygame.math.Vector2(0,0)
         self.on_ground = True
 
 
-class Platform(pygame.sprite.Sprite):
+class Ground(pygame.sprite.Sprite):
     """
-    Platforms, including the ground, that the player character can walk on and jump off of
+    Ground that the player character can walk on and jump off of
     """
-    def __init__(self, image, x=WIDTH_GW/2, y=HEIGHT_GW-50):
+    def __init__(self, image, x=WIDTH_GW/2, y=HEIGHT_GW-k_ground_height):
         """
         Create an object.
         """
         # Initialize variables
         self.x = x
         self.y = y
+        self.init_x = x
+        self.init_y = y
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.image.set_colorkey(BLACK)
@@ -138,8 +140,13 @@ class Platform(pygame.sprite.Sprite):
         self.rect.center = (x,y)
 
     def restart(self):
-        self.x = WIDTH_GW/2
-        self.y = HEIGHT_GW-50
+        self.x = self.init_x
+        self.y = self.init_y
+        self.rect.center = (self.x,self.y)
+
+
+class Platform(Ground):
+    def update(self):
         self.rect.center = (self.x,self.y)
 
 
@@ -160,7 +167,7 @@ class Object(pygame.sprite.Sprite):
         activities: decrease zest by 5
         ventilator: increases health by 100
     """
-    def __init__(self, delta_function, delta_value, image, x=WIDTH_GW + k_wall_offset, y=HEIGHT_GW - k_floor_offset):
+    def __init__(self, delta_function, delta_value, image, x=WIDTH_GW + k_wall_offset, y=HEIGHT_GW - k_ground_height):
         """
         Create an object.
         """
@@ -194,4 +201,4 @@ class Object(pygame.sprite.Sprite):
         """move object back to starting location after contact or reaching end of screen
         """
         self.x=WIDTH_GW + k_wall_offset
-        self.y=HEIGHT_GW - k_floor_offset
+        self.y=HEIGHT_GW - k_ground_height
