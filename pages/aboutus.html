@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+
+<head>
+	<base href="/">
+	<script src="dmxAppConnect/dmxAppConnect.js"></script>
+	<meta charset="UTF-8">
+	<title>Untitled Document</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+	<script src="dmxAppConnect/dmxBootstrap4Modal/dmxBootstrap4Modal.js" defer=""></script>
+	<script src="dmxAppConnect/dmxVideo/dmxVideo.js" defer=""></script>
+	<script src="dmxAppConnect/dmxTyped/dmxTyped.js" defer=""></script>
+	<script src="dmxAppConnect/dmxTyped/typed.min.js" defer=""></script>
+</head>
+
+<body is="dmx-app" id="">
+	<div class="container wappler-block">
+		<div class="row">
+			<div class="text-center pt-5 pb-5 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+				<h4 class="">about us&nbsp;<br>
+					<font color="#6c757d"><span style="font-size: 19.2px;">meet the ideation behind our game</span></font>
+				</h4>
+				<video is="dmx-video" id="video1" width="100%"></video>
+				<p>this is the working game!</p>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-4 pb-4">
+		<div class="row mb-4">
+			<div class="col-12">
+				<p>when we decided to do this game, the world was in a state of panic, hoarding food, toilet paper, and other household items. we wanted to incorporate that in somehow, so we decided to make the purpose of the game to gain as many of
+					these household items as possible, while also "quarantining", by staying away from all the infected people. the big idea was to encourage players to live their lives safely, encouraging the concept of social distancing, to try to
+					get this pandemic over as soon as possible.</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="text-center col-12 col-sm-6 col-lg-3 mb-3">
+				<img class="wappler-type-picture mb-3" src="assets/images/mindmap.png" width="280" height="200">
+				<h5>mind map</h5>
+				<p>this was used to think things through and understand the elements of our project in order of importance</p>
+			</div>
+			<div class="text-center col-12 col-sm-6 col-lg-3 mb-3">
+				<img class="wappler-type-picture mb-3" width="280">
+				<h5>some other flow chart</h5>
+				<p>help</p>
+			</div>
+			<div class="text-center col-12 col-sm-6 col-lg-3 mb-3">
+				<img class="wappler-type-picture mb-3" src="assets/images/collisions.png" width="280" height="100">
+				<h5>collision code</h5>
+				<p>this block of code checks to see if the player hits any obect. if it does, the object disappears and gets recycled to show up again</p>
+			</div>
+			<div class="text-center col-12 col-sm-6 col-lg-3 mb-3">
+				<img class="wappler-type-picture mb-3" src="assets/images/sprites.png" width="280" height="100">
+				<h5>sprite movement</h5>
+				<p>this block of code will cause a sprite (toilet paper) to appear on the screen and move around on its own</p>
+			</div>
+		</div>
+	</div>
+	<div class="container wappler-block pt-3 pb-3">
+		<div class="modal fade" id="modal-video" is="dmx-bs4-modal" tabindex="-1" role="dialog">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content rounded-0 bg-transparent border-0">
+					<div class="modal-body p-0">
+						<video class="d-block" is="dmx-video" id="video1" width="100%"></video>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+
+</html>
