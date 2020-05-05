@@ -15,7 +15,7 @@ class Model:
     """
     Updates the game based on Controller input.
     """
-    def __init__(self, num_tp = 5, num_sick_people = 14, num_masks = 4, num_eggs = 4):
+    def __init__(self, num_tp = 5, num_sick_people = 8, num_masks = 4, num_eggs = 3, num_guitars = 3, num_paint = 3):
         '''
         platform_list: list of each platform object to be used for finding where they are
         platform_locations: dictionary of each platforms corners format {'left_bound', 'right_bound', 'top_bound', 'bottom_bound'}
@@ -42,14 +42,14 @@ class Model:
         # set up asset folders
         game_folder = os.path.dirname(__file__)
         img_folder = os.path.join(game_folder, 'img')
-        player_img = pygame.image.load(os.path.join(img_folder, 'human.jpg')).convert()
-        tp_img = pygame.image.load(os.path.join(img_folder, 'tp.png')).convert()
-        sick_img = pygame.image.load(os.path.join(img_folder, 'sick.png')).convert()
-        egg_img = pygame.image.load(os.path.join(img_folder, 'eggnflour.png')).convert()
-        mask_img = pygame.image.load(os.path.join(img_folder, 'mask.png')).convert()
+        player_img = pygame.image.load(os.path.join(img_folder, 'human.jpg')).convert_alpha()
+        tp_img = pygame.image.load(os.path.join(img_folder, 'tp.png')).convert_alpha()
+        sick_img = pygame.image.load(os.path.join(img_folder, 'sick.png')).convert_alpha()
+        egg_img = pygame.image.load(os.path.join(img_folder, 'eggnflour2.png')).convert_alpha()
+        mask_img = pygame.image.load(os.path.join(img_folder, 'mask.png')).convert_alpha()
         ground_img = pygame.image.load(os.path.join(img_folder, 'ground.png')).convert()
-        guitar = pygame.image.load(os.path.join(img_folder, 'guitar.png')).convert()
-        paint = pygame.image.load(os.path.join(img_folder, 'paint.png')).convert()
+        guitar_img = pygame.image.load(os.path.join(img_folder, 'guitar.png')).convert_alpha()
+        paint_img = pygame.image.load(os.path.join(img_folder, 'paint.png')).convert_alpha()
         '''social = pygame.image.load(os.path.join(img_folder, 'social.png')).convert()
         ventilator_img = pygame.image.load(os.path.join(img_folder, 'ventilator.png')).convert()'''
         self.background_img = pygame.image.load(os.path.join(img_folder, 'background.jpg')).convert()
@@ -76,6 +76,10 @@ class Model:
             self.object_list.append(Object(self.player_character.change_health, 5, mask_img))
         for egg in range(num_eggs):
             self.object_list.append(Object(self.player_character.change_zest, 5, egg_img))
+        for paint in range(num_paint):
+            self.object_list.append(Object(self.player_character.change_zest, 5, paint_img))
+        for guitar in range(num_guitars):
+            self.object_list.append(Object(self.player_character.change_zest, 5, guitar_img))
         for object in self.object_list:
             self.all_sprites.add(object)
             self.object_sprites.add(object)
@@ -199,9 +203,10 @@ if __name__ == '__main__':
             model.run()
             for event in model.events:
                 if event.type == pygame.QUIT:
-                    pygame.quit()
                     game_loop= False
                     model.game_over = True
+                    end_screen = False
+                    pygame.quit()
             if model.game_over == True:#this was just added. we need to make this equal false when player dies of corona or boredom. havent done that yet.
                 health = 100
                 zest = 100
@@ -209,7 +214,9 @@ if __name__ == '__main__':
                 end_screen = True
                 for sprite in model.all_sprites:
                     sprite.restart()
-        model.end_screen()
+        print(end_screen)
+        if (end_screen):
+            model.end_screen()
         while end_screen == True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
