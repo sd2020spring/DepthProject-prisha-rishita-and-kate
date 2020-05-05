@@ -75,16 +75,13 @@ class PlayerCharacter(pygame.sprite.Sprite):
         @max_health integer that represents the max health of character
 
         returns     True if the health change results in a value greater than zero False if the character is dead!
-
-        Raises:
-            ValueError: if delta isn't an integer #don't know how to raise errors
         """
 
 
         if self.health + delta <= k_max_health:
             self.health = self.health + delta
-        # Raise ValueError if delta isn't integer
-        pass
+        else:
+            self.health = k_max_health
 
     def change_zest(self, delta = 5):
         """
@@ -94,15 +91,11 @@ class PlayerCharacter(pygame.sprite.Sprite):
         @max_zest integer that represents the max zest health of character
 
         returns   True if the zest change results in a value less than max_zest False if the character reaches max zest and dies!
-
-        Raises:
-            ValueError: if delta isn't an integer         #don't know how to raise errors
         """
         if self.zest + delta <= k_max_zest:
             self.zest += delta
-
-        # Raise ValueError if delta isn't integer
-        pass
+        else:
+            self.zest = k_max_zest
 
     def get_toilet_paper(self, num_tp):
        #you would only call this function if your hits a toilet paper. in which case, would it not be easier to just add 1 instead of having this whole function?
