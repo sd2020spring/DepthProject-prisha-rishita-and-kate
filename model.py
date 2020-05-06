@@ -152,7 +152,7 @@ class Model:
                 #if we collide with a sick sprite, then bounce away or attack them
                 if game_item in self.sick_sprites:
                     #if player jumps on them, they die
-                    if (game_item.pos.y - (game_item.rect.height/4) > player.pos.y):
+                    if (game_item.pos.y - (game_item.rect.height/2) > player.pos.y):
                         game_item.restart()
                         self.onscreen_obejcts.remove(game_item)
                         self.offscreen_obejcts.append(game_item)

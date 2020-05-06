@@ -108,7 +108,7 @@ class PlayerCharacter(pygame.sprite.Sprite):
         Gets another roll of toilet paper.
         """
         # Increase character's toilet paper by one
-        self.num_tp += 1
+        self.num_tp += num_tp 
 
     def bounce_away_from_sickness(self,x_amount):
         """moves back a direction when hit by a sick person"""
