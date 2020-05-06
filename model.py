@@ -312,7 +312,7 @@ class Model:
             for game_item in self.onscreen_obejcts:
                 #do some different things with the sick people speed and check gravity
                 if game_item in self.sick_sprites:
-                    game_item.vel.x = -k_sick_speed
+                    game_item.pos.x += -k_sick_speed
                     if game_item.pos.x > WIDTH_GW or game_item.pos.x < 0:
                         game_item.on_ground = True
                     else:
