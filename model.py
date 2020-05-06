@@ -38,7 +38,7 @@ class Model:
         img_folder = os.path.join(game_folder, 'img')
         player_img = pygame.image.load(os.path.join(img_folder, 'ryangosling.png')).convert_alpha()
         tp_img = pygame.image.load(os.path.join(img_folder, 'tp.png')).convert_alpha()
-        sick_img = pygame.image.load(os.path.join(img_folder, 'sickperson.png')).convert_alpha()
+        sick_img = pygame.image.load(os.path.join(img_folder, 'sickperson2.png')).convert_alpha()
         egg_img = pygame.image.load(os.path.join(img_folder, 'eggnflour2.png')).convert_alpha()
         mask_img = pygame.image.load(os.path.join(img_folder, 'mask.png')).convert_alpha()
         ground_img = pygame.image.load(os.path.join(img_folder, 'ground.png')).convert()
@@ -51,6 +51,8 @@ class Model:
         #list of platforms that are/aren't currently on screen
         self.offscreen_platforms = []
         self.onscreen_platforms = []
+        #keep track of where the platforms are so they vary in heights
+        self.last_platform_height = [1]
         #lists of all game_items (eggs, tp, sick people) that are/aren't currently on screen
         self.offscreen_obejcts = []
         self.onscreen_obejcts = []
@@ -240,21 +242,26 @@ class Model:
         #make sure we aren't dead before doing anything else
         if self.game_over == False:
             #PLATFORM MOTION
-            if time.time() > k_time_between_platforms + self.start_platform_time:
-                if (random.randint(0,20) == 0) and (len(self.offscreen_platforms) > 0):
-                    #select a platform
-                    platform_to_move = self.offscreen_platforms[random.randint(0,len(self.offscreen_platforms)-1)]
-                    #put it at one of two heights, and make the lower one more common
-                    if random.randint(1,5)> 2:
-                        height_multiplier = 2
-                    else:
-                        height_multiplier = 1
-                    #set the height of the platform based on the above number
-                    platform_to_move.y = ((HEIGHT_GW-k_ground_height)/3)*height_multiplier + k_ground_height
-                    #move it from the available list to the unavailable list and restart timer between sending platforms
-                    self.offscreen_platforms.remove(platform_to_move)
-                    self.onscreen_platforms.append(platform_to_move)
-                    self.start_platform_time = time.time()
+            #if time.time() > k_time_between_platforms + self.start_platform_time:
+            if  (len(self.offscreen_platforms) > 0):
+                if (len(self.onscreen_platforms) == 0 or self.onscreen_platforms[-1].x < WIDTH_GW-(self.onscreen_platforms[-1].rect.width) or
+                    abs((self.onscreen_platforms[-1].x - WIDTH_GW) % (self.onscreen_platforms[-1].rect.width/2)) < 5):
+                    if (random.randint(0,4) == 0):
+                        #select a platform
+                        platform_to_move = self.offscreen_platforms[random.randint(0,len(self.offscreen_platforms)-1)]
+                        #put it at one of two heights, make it probable to be opposite of the last few heights
+                        if random.randint(1,(self.last_platform_height.count(2)+1))> 1:
+                            height_multiplier = 1
+                        else:
+                            height_multiplier = 2
+                        self.last_platform_height.append(height_multiplier)
+                        self.last_platform_height.remove(self.last_platform_height[0])
+                        #set the height of the platform based on the above number
+                        platform_to_move.y = ((HEIGHT_GW-k_ground_height)/3)*height_multiplier + k_ground_height
+                        #move it from the available list to the unavailable list and restart timer between sending platforms
+                        self.offscreen_platforms.remove(platform_to_move)
+                        self.onscreen_platforms.append(platform_to_move)
+                        self.start_platform_time = time.time()
             #move each game_item that is on screen as the game scrolls
             for platform in self.onscreen_platforms:
                 #change the x value of the platform to move it
