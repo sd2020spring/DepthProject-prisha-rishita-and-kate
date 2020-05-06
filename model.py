@@ -20,8 +20,8 @@ class Model:
         -evaluates collisions and calls appropriate functions accordingly
         -checks if the player has died and ends loop based on that
     """
-    def __init__(self, num_tp = 5, num_sick_people = 8, num_masks = 4, num_eggs = 3,
-                num_guitars = 3, num_paint = 3, num_vent = 1, num_platforms = 4):
+    def __init__(self, num_tp = 10, num_sick_people = 16, num_masks = 4, num_eggs = 3,
+                num_guitars = 3, num_paint = 3, num_vent = 1, num_platforms = 3):
         '''
         start pygame window,
 
@@ -152,7 +152,7 @@ class Model:
                 #if we collide with a sick sprite, then bounce away or attack them
                 if game_item in self.sick_sprites:
                     #if player jumps on them, they die
-                    if (game_item.pos.y - (game_item.rect.height/2) > player.pos.y):
+                    if (game_item.pos.y - (4*game_item.rect.height/5) > player.pos.y):
                         game_item.restart()
                         self.onscreen_obejcts.remove(game_item)
                         self.offscreen_obejcts.append(game_item)
@@ -361,7 +361,7 @@ if __name__ == '__main__':
     end_screen = False
     home = True
     model.home_screen()
-    time.sleep(.01)
+    time.sleep(.5)
     while home:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -372,6 +372,9 @@ if __name__ == '__main__':
                 game_loop = True
                 home = False
     while game_loop:
+        pygame.mixer.music.load('tokyodrift.mp3')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.1)
         while model.game_over == False:
             model.run()
             if model.game_over == True:
@@ -384,6 +387,8 @@ if __name__ == '__main__':
                     pygame.quit()
         if (end_screen):
             model.end_screen()
+            pygame.mixer.music.fadeout(1000)
+            time.sleep(.5)
         while end_screen == True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
