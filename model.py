@@ -149,21 +149,30 @@ class Model:
         for game_item in game_item_collisions:
             #make sure we are actually colliding with something visible
             if game_item in self.onscreen_obejcts:
-                #if we collide with a sick sprite, then make both characters bounce away
+                #if we collide with a sick sprite, then bounce away or attack them
                 if game_item in self.sick_sprites:
-                    if game_item.pos.x > player.pos.x:
-                        game_item.delta_value[1] = -k_bounce_dist
-                        game_item.pos.x += k_bounce_dist
+                    #if player jumps on them, they die
+                    if (game_item.pos.y - (game_item.rect.height/4) > player.pos.y):
+                        game_item.restart()
+                        self.onscreen_obejcts.remove(game_item)
+                        self.offscreen_obejcts.append(game_item)
+                        #player gets bonus toilet paper
+                        player.get_toilet_paper(5)
+                    #if sick person hits the player, player loses health and both bounce away
                     else:
-                        game_item.delta_value[1] = k_bounce_dist
-                        game_item.pos.x -= k_bounce_dist
+                        if game_item.pos.x > player.pos.x:
+                            game_item.delta_value[1] = -k_bounce_dist
+                            game_item.pos.x += k_bounce_dist
+                        else:
+                            game_item.delta_value[1] = k_bounce_dist
+                            game_item.pos.x -= k_bounce_dist
+                        game_item.contact_player()
                 #if its any other sprite, reset the game_item, and move it to the onscreen list
                 else:
                     game_item.restart()
                     self.onscreen_obejcts.remove(game_item)
                     self.offscreen_obejcts.append(game_item)
-                #call the contact function regardless of what has hit the player
-                game_item.contact_player()
+                    game_item.contact_player()
 
     def gravity_collisions(self, player):
         """checks to see if the player is on the ground or not """
