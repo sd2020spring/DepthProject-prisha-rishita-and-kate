@@ -38,7 +38,7 @@
 					</button></a>
 				</div>
 				<div id="header-img" class="order-1 order-sm-1 order-md-2 col-12 col-sm-12 col-md-5 col-lg-6">
-					<img class="img-fluid" src="assets/images/1.jpg"> </div>
+					<img class="img-fluid" src="https://img.nickpic.host/3Xxti6.jpg"> </div>
 			</div>
 		</div>
 	</header>
@@ -90,7 +90,7 @@
 					<a class="nav-link" href="https://sd2020spring.github.io/DepthProject-prisha-rishita-and-kate/pages/aboutus.html"><button type="button" class="btn btn-primary">learn more
 					</button></a>
 				</div>
-				<div class="col-12 col-lg-6 order-lg-1"> <img class="img-fluid" src="assets/images/2.jpg"> </div>
+				<div class="col-12 col-lg-6 order-lg-1"> <img class="img-fluid" src="https://img.nickpic.host/3XxM2p.jpg"> </div>
 			</div>
 			<div class="row align-items-center px-lg-0 no-gutters">
 				<div class="col-12 col-lg-4 mx-auto order-lg-1 mb-3">
@@ -100,7 +100,7 @@
 					<a class="nav-link" href="https://sd2020spring.github.io/DepthProject-prisha-rishita-and-kate/pages/evolution.html"><button type="button" class="btn btn-primary">learn more
 					</button></a>
 				</div>
-				<div class="col-12 col-lg-6 order-lg-2"> <img class="img-fluid" src="assets/images/3.jpg"> </div>
+				<div class="col-12 col-lg-6 order-lg-2"> <img class="img-fluid" src="https://img.nickpic.host/3Xx1xY.jpg"> </div>
 			</div>
 		</div>
 	</section>
