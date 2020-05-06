@@ -111,7 +111,8 @@ class Model:
         self.draw_text_on_screen("Can You Beat Corona?", 64, WIDTH_GW / 2, HEIGHT_GW / 4, BLACK)
         self.draw_text_on_screen("Press a key to begin", 18, WIDTH_GW / 2, HEIGHT_GW * 3/8, BLACK)
         self.draw_text_on_screen("Arrow keys move player. Collect as many toilet paper rolls as you can"
-                                +"before dying of corona or boredom. Jump on sick people to get bonus points!", 22, WIDTH_GW / 2, HEIGHT_GW / 2, BLACK)
+                                +"before dying of corona or boredom.", 22, WIDTH_GW / 2, HEIGHT_GW / 2, BLACK)
+        self.draw_text_on_screen("Jump on sick people to get bonus points!", 20, WIDTH_GW / 2, HEIGHT_GW * 5/8, BLACK)
         self.draw_text_on_screen("Health: Start at 100%, decreases if player collides with sick person,"
                                 +"increases if player collects masks/ ventilators.", 18, WIDTH_GW / 2, HEIGHT_GW * 3/4, BLACK)
         self.draw_text_on_screen("Zest for Life: Start at 100%, decreases over time,"
