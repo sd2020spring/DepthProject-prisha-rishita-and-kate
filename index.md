@@ -120,7 +120,7 @@
 						</li>
 						<li>
 							<h5 class="bold">step 2</h5>
-							<p class="mt-1">run "sudo apt-get install python-pygame"&nbsp;</p>
+							<p class="mt-1">run "sudo apt-get install python-pygame" (if you're using anaconda, type "pip install pygame"&nbsp;</p>
 						</li>
 						<li>
 							<h5 class="bold">step 3</h5>
@@ -128,7 +128,7 @@
 						</li>
 						<li>
 							<h5 class="bold">step 4</h5>
-							<p class="mt-1">run the code, choose your character, and enjoy!</p>
+							<p class="mt-1">run the code, click start, and enjoy!</p>
 						</li>
 					</ul>
 				</div>
