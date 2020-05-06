@@ -175,26 +175,25 @@ class Game_Item(pygame.sprite.Sprite):
         activities: decrease zest by 5
         ventilator: increases health by 100
     """
-    def __init__(self, delta_function, delta_value, image, x=WIDTH_GW + k_wall_offset, y=HEIGHT_GW - k_ground_height):
+    def __init__(self, delta_function, delta_value, image, x=WIDTH_GW + k_wall_offset, y=HEIGHT_GW - k_ground_height-k_game_item_offset):
         """
         Create an game_item.
         """
         # Initialize variables
         self.delta_function = delta_function
         self.delta_value = delta_value
-        self.x = x
-        self.y = y
+        self.pos = pygame.math.Vector2(x,y)
         pygame.sprite.Sprite.__init__(self)
         self.image = image
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
-        self.rect.center = (x,y)
+        self.rect.center = self.pos
 
 
     def update(self):
         """updates the game_item position based on modified x and y coordinates
         """
-        self.rect.center = (self.x,self.y)
+        self.rect.center = self.pos
 
 
     def contact_player(self):
@@ -212,5 +211,24 @@ class Game_Item(pygame.sprite.Sprite):
     def restart(self):
         """move game_item back to starting location after contact or reaching end of screen
         """
-        self.x=WIDTH_GW + k_wall_offset
-        self.y=HEIGHT_GW - k_ground_height
+        self.pos.x=WIDTH_GW + k_wall_offset
+        self.pos.y=HEIGHT_GW - k_ground_height - k_game_item_offset
+
+class Sick_People(Game_Item):
+    """ sick people that move if contacting player and can fall off platforms"""
+    def __init__(self,delta_function, delta_value, image, x=WIDTH_GW + k_wall_offset, y=HEIGHT_GW - k_ground_height):
+        super().__init__(delta_function, delta_value, image, x=WIDTH_GW + k_wall_offset, y=HEIGHT_GW - k_ground_height)
+        self.vel = pygame.math.Vector2(0,0)
+        self.acc = pygame.math.Vector2(0,0)
+        self.on_ground = True
+
+    def update(self):
+        """check if on the ground, and fall if not"""
+        self.acc = pygame.math.Vector2(0,k_gravity)
+        if self.on_ground:
+            self.acc.y = 0
+            if self.vel.y > 0:
+                self.vel.y = 0
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
+        self.rect.center = self.pos

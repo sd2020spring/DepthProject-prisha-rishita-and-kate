@@ -21,6 +21,7 @@ k_out_of_box_time = 1.25
 k_out_of_bounds = 50
 k_game_item_offset = 75
 k_bounce_dist = 100
+k_sick_speed = 6
 WIDTH_GW = 1020#root.winfo_screenwidth() # width of our game window
 HEIGHT_GW = 620#root.winfo_screenheight() # height of our game window
 BLACK = (0,0,0)

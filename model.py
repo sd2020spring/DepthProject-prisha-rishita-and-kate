@@ -80,8 +80,7 @@ class Model:
         for tp in range(num_tp):
             self.offscreen_obejcts.append(Game_Item([self.player_character.get_toilet_paper], [1], tp_img))
         for sick_people in range(num_sick_people):
-            self.offscreen_obejcts.append(Game_Item([self.player_character.change_health,
-                self.player_character.bounce_away_from_sickness], [-15,k_bounce_dist], sick_img))
+            self.offscreen_obejcts.append(Sick_People([self.player_character.change_health,self.player_character.bounce_away_from_sickness], [-15,k_bounce_dist], sick_img))
             self.sick_sprites.add(self.offscreen_obejcts[-1])
         for mask in range(num_masks):
             self.offscreen_obejcts.append(Game_Item([self.player_character.change_health], [5], mask_img))
@@ -152,12 +151,12 @@ class Model:
             if game_item in self.onscreen_obejcts:
                 #if we collide with a sick sprite, then make both characters bounce away
                 if game_item in self.sick_sprites:
-                    if game_item.x > player.pos.x:
+                    if game_item.pos.x > player.pos.x:
                         game_item.delta_value[1] = -k_bounce_dist
-                        game_item.x += k_bounce_dist
+                        game_item.pos.x += k_bounce_dist
                     else:
                         game_item.delta_value[1] = k_bounce_dist
-                        game_item.x -= k_bounce_dist
+                        game_item.pos.x -= k_bounce_dist
                 #if its any other sprite, reset the game_item, and move it to the onscreen list
                 else:
                     game_item.restart()
@@ -165,6 +164,9 @@ class Model:
                     self.offscreen_obejcts.append(game_item)
                 #call the contact function regardless of what has hit the player
                 game_item.contact_player()
+
+    def gravity_collisions(self, player):
+        """checks to see if the player is on the ground or not """
         #get all the platform collisions
         platform_collisions = pygame.sprite.spritecollide(player, self.platform_sprites, False)
         #if player is touching a platform and are moving downwards, evaluate if if should stop or not
@@ -177,7 +179,7 @@ class Model:
                     player.on_ground = True
         #if not touching any platforms or moving upwards, player is not on the ground
         else:
-            self.player_character.on_ground = False
+            player.on_ground = False
 
     def check_for_death(self,player):
         """checks the input players stats to see if they have died"""
@@ -280,17 +282,18 @@ class Model:
                 if (random.randint(0,30) == 0) and (len(self.offscreen_obejcts) > 0):
                     #create an game_item and start it on the ground
                     game_item_to_move = self.offscreen_obejcts[random.randint(0,len(self.offscreen_obejcts)-1)]
-                    game_item_to_move.y = HEIGHT_GW - k_ground_height - k_game_item_offset
+                    game_item_to_move.pos.y = HEIGHT_GW - k_ground_height - k_game_item_offset
                     #and randomly choose if it should really be on a platform instead
-                    if random.randint(0,10) > 0:
+                    if random.randint(0,5) > 0:
                         #find any platforms we could start on
                         potential_start_locations = []
                         for platform in self.onscreen_platforms:
-                            if platform.x > WIDTH_GW - k_platform_offset/2:
+                            if platform.x > WIDTH_GW-(platform.rect.width/4) and platform.x < WIDTH_GW + (3*platform.rect.width/4):
                                 potential_start_locations.append(platform)
                         #if there are platforms, then choose one randomly
-                        if len(potential_start_locations) > 1:
-                            game_item_to_move.y = platform.y - k_game_item_offset
+                        if len(potential_start_locations) > 0:
+                            platform = potential_start_locations[random.randint(0,len(potential_start_locations)-1)]
+                            game_item_to_move.pos.y = platform.y - k_game_item_offset
                         #otherwise give up and leave the game_item on the ground
                     #move the game_item to the unavailable moving list
                     self.offscreen_obejcts.remove(game_item_to_move)
@@ -298,15 +301,26 @@ class Model:
                     self.start_game_item_time = time.time()
                 #move each game_item that is on screen
             for game_item in self.onscreen_obejcts:
-                game_item.x -= k_game_item_move_value
-                #if the game_item has reached the edge of the screen, remove it
-                if game_item.x <=0:
+                #do some different things with the sick people speed and check gravity
+                if game_item in self.sick_sprites:
+                    game_item.vel.x = -k_sick_speed
+                    if game_item.pos.x > WIDTH_GW or game_item.pos.x < 0:
+                        game_item.on_ground = True
+                    else:
+                        self.gravity_collisions(game_item)
+                #everything else just moves at a nice rate and cant fall
+                else:
+                    game_item.pos.x -= k_game_item_move_value
+                    #if the game_item has reached the edge of the screen, remove it
+                if game_item.pos.x <=0:
                     self.onscreen_obejcts.remove(game_item)
                     self.offscreen_obejcts.append(game_item)
                     game_item.restart()
 
-            #check for collisions with game_items and act upon that
+
+            #check for player collisions with game_items and act upon that
             self.collisions(self.player_character)
+            self.gravity_collisions(self.player_character)
 
             #change player motion based on keyboard
             self.get_keyboard_input(self.player_character, pygame.K_LEFT,pygame.K_RIGHT,pygame.K_UP,pygame.K_DOWN)
